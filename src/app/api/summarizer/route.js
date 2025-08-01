@@ -100,7 +100,7 @@ ${input}
 """
 
 Your Summary Must:
-• Capture the **core ideas**, **insights**, and **critical information** from the content.
+• Capture the **core ideas**, **insights**, and **critical information** from the content and explain in brief.
 • Be domain-aware — adapt based on whether the topic is technical, academic, business, creative, medical, legal, scientific, etc.
 • Use **simple, natural, human-friendly language** — even for complex topics.
 • Extract and rephrase the **most important points**, not just obvious facts or surface-level details.

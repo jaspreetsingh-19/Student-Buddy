@@ -5,6 +5,7 @@ import axios from "axios"
 import { useRouter } from "next/navigation"
 import { Toaster, toast } from "sonner"
 
+
 import {
     Home,
     LogOut,
@@ -75,11 +76,7 @@ const getNavigationItems = (userPlan, usageCount = {}) => [
         icon: Map,
         isPremium: true,
         isLocked: userPlan === 'free',
-        usageInfo: userPlan === 'free' ? {
-            used: usageCount.roadmaps || 0,
-            limit: FREE_LIMITS.roadmaps,
-            type: 'weekly'
-        } : null
+
     },
     {
         title: "Summarizer",
@@ -198,6 +195,7 @@ export default function DashboardLayout({ children }) {
     const pathname = usePathname()
     const router = useRouter()
 
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -208,6 +206,8 @@ export default function DashboardLayout({ children }) {
                 // Fetch usage statistics for free users
                 if (getUserPlan(res.data) === 'free') {
                     const usageRes = await axios.get("/api/usage")
+                    console.log("usage", usageRes)
+
                     setUsageCount(usageRes.data)
                 }
             } catch (error) {
@@ -284,8 +284,8 @@ export default function DashboardLayout({ children }) {
     async function handleLogout(e) {
         e.preventDefault()
         try {
-            const response = await axios.get("/api/auth/logout")
             toast.success("logging out plz wait...")
+            const response = await axios.get("/api/auth/logout")
             router.push("/auth/login")
         } catch (error) {
             console.log("error occurred", error)

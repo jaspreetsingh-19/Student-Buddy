@@ -15,6 +15,9 @@ import { cn } from "@/lib/utils"
 
 
 
+
+
+
 export default function SummarizerPage() {
     const [textInput, setTextInput] = useState("")
     const [currentSummary, setCurrentSummary] = useState(null)
@@ -60,6 +63,7 @@ export default function SummarizerPage() {
 
 
 
+
             const newSummary = {
                 _id: Date.now().toString(),
                 originalInput: textInput,
@@ -78,7 +82,7 @@ export default function SummarizerPage() {
             setTextInput("")
             toast.info("Input field cleared - ready for next text")
         } catch (error) {
-            console.error("Summarization failed:", error)
+
             const errorMessage = error.response?.data?.error || "Failed to summarize content"
             setError(errorMessage)
             toast.error(`Summarization failed: ${errorMessage}`, { id: "summarize-toast" })
