@@ -9,6 +9,7 @@ const logSchema = new mongoose.Schema({
         enum: ["summarizer", "roadmap", "task", "chatbot", "quiz"],
         required: true,
     },
+
     timestamp: { type: Date, default: Date.now },
 });
 

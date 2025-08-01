@@ -2,8 +2,14 @@ import crypto from "crypto";
 import { NextResponse } from "next/server";
 import connect from "@/lib/db";
 import User from "@/models/user"; // adjust the path accordingly
+import { getDataFromToken } from "@/helper/getDataFromToken"
+
 
 export async function POST(req) {
+    const userId = await getDataFromToken(req)
+    if (!userId) {
+        return new NextResponse("Unauthorized", { status: 401 });
+    }
     await connect();
     const body = await req.json();
 
@@ -11,7 +17,7 @@ export async function POST(req) {
         razorpay_order_id,
         razorpay_payment_id,
         razorpay_signature,
-        userId,
+
         premiumType, // must be passed from client as "monthly" or "yearly"
     } = body;
 

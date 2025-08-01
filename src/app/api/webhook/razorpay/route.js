@@ -4,6 +4,7 @@ import connect from "@/lib/db";
 import User from "@/models/user";
 import Payment from "@/models/payment";
 
+
 connect();
 export async function POST(req) {
 
@@ -50,7 +51,7 @@ export async function POST(req) {
             { orderId: payment.order_id },
             {
                 paymentId: payment.id,
-                status: "sucess",
+                status: "success",
                 paidAt: new Date(),
             }
         );

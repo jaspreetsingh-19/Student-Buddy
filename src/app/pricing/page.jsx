@@ -1,11 +1,14 @@
 "use client"
 
 import React, { useState } from 'react';
-import { Check, X, Star, Zap, Users, Clock, Shield, Headphones } from 'lucide-react';
-import Link from 'next/link';
-
+import { Check, X, Star, Zap } from 'lucide-react';
+import axios from 'axios';
+import { toast } from "sonner"
+import { useRouter } from 'next/navigation';
 const StudentBuddyPricing = () => {
     const [isYearly, setIsYearly] = useState(false);
+    const [loading, setLoading] = useState(null);
+    const router = useRouter()
 
     const plans = [
         {
@@ -24,11 +27,11 @@ const StudentBuddyPricing = () => {
                 "Priority Response Time": false,
                 "Ad-Free Experience": false,
                 "Support & Feedback": "Basic email support"
-
             },
             buttonText: "Get Started Free",
             buttonStyle: "bg-gray-100 text-gray-800 hover:bg-gray-200",
-            popular: false
+            popular: false,
+            planType: "free"
         },
         {
             name: "Monthly Plan",
@@ -50,7 +53,9 @@ const StudentBuddyPricing = () => {
             },
             buttonText: "Start Monthly Plan",
             buttonStyle: "bg-indigo-600 text-white hover:bg-indigo-700",
-            popular: !isYearly
+            popular: !isYearly,
+            planType: "monthly",
+            amount: 50
         },
         {
             name: "Yearly Plan",
@@ -73,9 +78,116 @@ const StudentBuddyPricing = () => {
             },
             buttonText: "Choose Yearly Plan",
             buttonStyle: "bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600",
-            popular: isYearly
+            popular: isYearly,
+            planType: "yearly",
+            amount: 500
         }
     ];
+
+    const loadRazorpayScript = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+        });
+    };
+
+    const handlePayment = async (plan) => {
+        if (plan.planType === 'free') {
+            // Handle free plan signup
+            router.push("/dashboard");
+            return;
+        }
+
+        setLoading(plan.planType);
+
+        try {
+            // Load Razorpay script
+            const isScriptLoaded = await loadRazorpayScript();
+            if (!isScriptLoaded) {
+                alert('Razorpay SDK failed to load. Please check your internet connection.');
+                setLoading(null);
+                return;
+            }
+
+            // Create order using axios
+            const response = await axios.post('/api/razorpay-order', {
+                amount: plan.amount,
+                premiumType: plan.planType
+            });
+
+            const data = response.data;
+            const { order } = data;
+
+            // Configure Razorpay options
+            const options = {
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                amount: order.amount,
+                currency: order.currency,
+                name: 'Student Buddy',
+                description: `${plan.name} - ${plan.description}`,
+                order_id: order.id,
+                handler: async function (response) {
+                    try {
+                        const paymentResult = await axios.post('/api/payment-success', {
+                            razorpay_order_id: order.id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature,
+                            premiumType: plan.planType
+
+                        });
+
+                        if (paymentResult.data.success) {
+                            toast.success('Payment successful! Premium activated.');
+                            router.push("/dashboard");
+                        } else {
+                            toast.error('Payment verified, but failed to activate premium.');
+                        }
+                    } catch (error) {
+                        console.error("Payment success verification failed:", error);
+                        toast.error('Payment failed to verify.');
+                    }
+                },
+                prefill: {
+                    name: 'Student',
+                    email: 'student@example.com',
+                    contact: '9999999999'
+                },
+                theme: {
+                    color: '#4F46E5'
+                },
+                modal: {
+                    ondismiss: function () {
+                        setLoading(null);
+                    }
+                }
+            };
+
+            // Open Razorpay checkout
+            const razorpay = new window.Razorpay(options);
+            razorpay.open();
+
+        } catch (error) {
+            console.error('Payment error:', error);
+
+            // Handle axios errors
+            if (error.response) {
+                // Server responded with error status
+                const errorMessage = error.response.data?.error || 'Payment failed. Please try again.';
+                alert(errorMessage);
+            } else if (error.request) {
+                // Network error
+                alert('Network error. Please check your internet connection.');
+            } else {
+                // Other errors
+                alert('Something went wrong. Please try again.');
+            }
+
+            setLoading(null);
+        }
+    };
 
     const FeatureIcon = ({ feature, value }) => {
         if (value === true) {
@@ -106,7 +218,30 @@ const StudentBuddyPricing = () => {
                             Unlock your academic potential with Student Buddy. From basic tools to AI-powered study assistance.
                         </p>
 
-
+                        {/* Yearly/Monthly Toggle */}
+                        <div className="flex items-center justify-center space-x-4 mb-8">
+                            <span className={`text-lg font-medium ${!isYearly ? 'text-white' : 'text-blue-200'}`}>
+                                Monthly
+                            </span>
+                            <button
+                                onClick={() => setIsYearly(!isYearly)}
+                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 ${isYearly ? 'bg-green-500' : 'bg-gray-200'
+                                    }`}
+                            >
+                                <span
+                                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isYearly ? 'translate-x-6' : 'translate-x-1'
+                                        }`}
+                                />
+                            </button>
+                            <span className={`text-lg font-medium ${isYearly ? 'text-white' : 'text-blue-200'}`}>
+                                Yearly
+                            </span>
+                            {isYearly && (
+                                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
+                                    Save 16%
+                                </span>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -171,9 +306,20 @@ const StudentBuddyPricing = () => {
                                 </div>
 
                                 {/* CTA Button */}
-                                <Link href={"/auth/login"} className={`w-full py-3 px-4 rounded-lg font-semibold text-sm transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-50 ${plan.buttonStyle} focus:ring-indigo-500`}>
-                                    {plan.buttonText}
-                                </Link>
+                                <button
+                                    onClick={() => handlePayment(plan)}
+                                    disabled={loading === plan.planType}
+                                    className={`w-full py-3 px-4 rounded-lg font-semibold text-sm transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-50 ${plan.buttonStyle} focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
+                                >
+                                    {loading === plan.planType ? (
+                                        <div className="flex items-center justify-center space-x-2">
+                                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                                            <span>Processing...</span>
+                                        </div>
+                                    ) : (
+                                        plan.buttonText
+                                    )}
+                                </button>
                             </div>
                         </div>
                     ))}
@@ -259,7 +405,10 @@ const StudentBuddyPricing = () => {
                     <h2 className="text-3xl font-bold text-white mb-4">Ready to Boost Your Studies?</h2>
                     <p className="text-xl text-blue-100 mb-8">Join thousands of students who are already succeeding with Student Buddy</p>
                     <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                        <button className="bg-white text-indigo-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-50 transition-colors">
+                        <button
+                            onClick={() => handlePayment(plans[0])}
+                            className="bg-white text-indigo-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-50 transition-colors"
+                        >
                             Start Free Trial
                         </button>
                         <button className="bg-indigo-500 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-indigo-400 transition-colors">
