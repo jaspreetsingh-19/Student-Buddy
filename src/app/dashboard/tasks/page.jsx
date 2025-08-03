@@ -163,7 +163,7 @@ export default function TasksContent() {
             toast.success(`Task "${task.title}" ${!task.isCompleted ? "completed" : "reopened"}`, { id: "toggle-task" })
 
             if (!task.isCompleted) {
-                toast.success("Great job! Keep up the momentum! 🎉", { duration: 3000 })
+                toast.success("Great job! Keep up the momentum!", { duration: 2000 })
             }
         } catch (error) {
             toast.error("Failed to update task. Please try again.", { id: "toggle-task" })
@@ -225,7 +225,7 @@ export default function TasksContent() {
             toast.success(`Task "${taskTitle}" created successfully`, { id: "add-task" })
             toast.info("Task form cleared - ready for next task")
         } catch (error) {
-            console.log("erroro is ", error)
+
             toast.error("Failed to create task. Please try again.", { id: "add-task" })
         } finally {
             setSubmitting(false)

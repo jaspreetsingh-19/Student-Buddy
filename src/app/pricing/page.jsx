@@ -119,6 +119,7 @@ const StudentBuddyPricing = () => {
             });
 
             const data = response.data;
+
             const { order } = data;
 
             // Configure Razorpay options
@@ -172,17 +173,17 @@ const StudentBuddyPricing = () => {
         } catch (error) {
             console.error('Payment error:', error);
 
-            // Handle axios errors
+
             if (error.response) {
-                // Server responded with error status
+
                 const errorMessage = error.response.data?.error || 'Payment failed. Please try again.';
-                alert(errorMessage);
+                toast.error(errorMessage);
             } else if (error.request) {
-                // Network error
-                alert('Network error. Please check your internet connection.');
+
+                toast.error('Network error. Please check your internet connection.');
             } else {
-                // Other errors
-                alert('Something went wrong. Please try again.');
+
+                toast.error('Something went wrong. Please try again.');
             }
 
             setLoading(null);
@@ -218,30 +219,6 @@ const StudentBuddyPricing = () => {
                             Unlock your academic potential with Student Buddy. From basic tools to AI-powered study assistance.
                         </p>
 
-                        {/* Yearly/Monthly Toggle */}
-                        <div className="flex items-center justify-center space-x-4 mb-8">
-                            <span className={`text-lg font-medium ${!isYearly ? 'text-white' : 'text-blue-200'}`}>
-                                Monthly
-                            </span>
-                            <button
-                                onClick={() => setIsYearly(!isYearly)}
-                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 ${isYearly ? 'bg-green-500' : 'bg-gray-200'
-                                    }`}
-                            >
-                                <span
-                                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isYearly ? 'translate-x-6' : 'translate-x-1'
-                                        }`}
-                                />
-                            </button>
-                            <span className={`text-lg font-medium ${isYearly ? 'text-white' : 'text-blue-200'}`}>
-                                Yearly
-                            </span>
-                            {isYearly && (
-                                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
-                                    Save 16%
-                                </span>
-                            )}
-                        </div>
                     </div>
                 </div>
             </div>

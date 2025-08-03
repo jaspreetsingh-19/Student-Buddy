@@ -86,7 +86,7 @@ export default function RoadmapPage() {
 
         try {
             setCreating(true)
-            toast.loading("Generating AI roadmap...", { id: "create-roadmap" })
+            toast.loading("Generating roadmap...", { id: "create-roadmap" })
 
             const response = await axios.post("/api/roadmap", formData)
             setRoadmaps([response.data.roadmap, ...roadmaps])

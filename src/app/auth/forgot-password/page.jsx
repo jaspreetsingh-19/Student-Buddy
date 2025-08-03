@@ -17,17 +17,17 @@ export default function ForgotPasswordPage() {
     async function handleForgotPassword(e) {
         e.preventDefault()
         try {
-            console.log("testing")
+
             setLoading(true)
 
             const response = await axios.post("/api/auth/forgot-password", { email })
-            console.log("password reset link sent ", response.data)
+
             toast.success("password reset link sent Check your email")
 
 
 
         } catch (error) {
-            console.log("error occured", error)
+
             toast.error("errormessage")
             setLoading(false)
         } finally {

@@ -20,23 +20,23 @@ export default function LoginPage() {
     async function handleLogin(e) {
         e.preventDefault()
         try {
-            console.log("testing")
+
             setLoading(true)
 
             const response = await axios.post("/api/auth/login", user)
-            console.log("role is ", response.data.role)
+
             if (response.data.role === "admin") {
-                router.push("/admin/user"); // 🔁 Redirect admin
+                router.push("/admin/user");
             } else {
-                router.push("/dashboard"); // Regular user
+                router.push("/dashboard");
             }
-            console.log("logged in ", response.data)
+
             toast.success("logging in plz wait...")
 
 
 
         } catch (error) {
-            console.log("error occured", error.response?.data.error)
+
             toast.error(error.response?.data.error)
             setLoading(false)
         } finally {
@@ -53,7 +53,7 @@ export default function LoginPage() {
                     {/* Header */}
                     <div className="p-6 pb-4 text-center">
                         <h1 className="text-xl font-semibold text-gray-900">Welcome back</h1>
-                        <p className="mt-2 text-sm text-gray-600">Login with your Apple or Google account</p>
+                        <p className="mt-2 text-sm text-gray-600">Login with your Github or Google account</p>
                     </div>
 
                     {/* Content */}
@@ -64,7 +64,7 @@ export default function LoginPage() {
                                 <div className="flex flex-col gap-4">
                                     <button
                                         type="button"
-                                        onClick={() => window.location.href = "/api/auth/github/redirect"}
+                                        onClick={() => router.push("/api/auth/github/redirect")}
 
                                         className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
                                     >
@@ -79,7 +79,7 @@ export default function LoginPage() {
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => window.location.href = "/api/auth/google/redirect"}
+                                        onClick={() => router.push("/api/auth/google/redirect")}
                                         className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
                                     >
                                         <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">

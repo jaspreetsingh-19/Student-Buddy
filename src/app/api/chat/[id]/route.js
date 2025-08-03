@@ -7,6 +7,7 @@ import { checkPremiumAccess } from "@/lib/checkPremium";
 
 import Log from "@/models/logs"
 
+
 connect()
 
 export async function GET(req) {
@@ -74,6 +75,7 @@ export async function POST(req) {
             userId,
             action: "Sent Message in Existing Doubt Chat",
             details: `User message: ${message.slice(0, 50)}...`,
+            feature: "chat",
             timestamp: new Date(),
         });
 

@@ -40,7 +40,7 @@ export default function ExploreResourcesPage() {
         try {
             const response = await axios.get("/api/resources")
             setPreviousSearches(response.data.resources || [])
-            console.log("fetch response is ", response.data)
+
 
             // Toast for successful load
             if (response.data.resources && response.data.resources.length > 0) {
@@ -58,15 +58,15 @@ export default function ExploreResourcesPage() {
         setCurrentResource(null)
 
         // Loading toast
-        toast.loading("Generating AI-powered resources...", { id: "generate-resources" })
+        toast.loading("Finding the best resources for you ...", { id: "generate-resources" })
 
         try {
             const response = await axios.post("/api/resources", { topic: topicInput })
-            console.log("POST response:", response.data)
+
 
             const newResource = response.data.resource
             setCurrentResource(newResource)
-            console.log("currentResource set to:", newResource)
+
 
             await fetchPreviousSearches()
             toast.success("Resources generated successfully!", { id: "generate-resources" })

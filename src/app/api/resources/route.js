@@ -93,7 +93,7 @@ FORMATTING RULES:
             userId,
             action: "Asked for Resources",
             details: `Topics: ${topic.slice(0, 50)}...`,
-            feature: " Explore Resources",
+            feature: "Explore Resources",
             timestamp: new Date(),
         });
         return NextResponse.json({ resource })

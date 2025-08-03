@@ -54,7 +54,7 @@ export default function ChatbotPage() {
         try {
             setIsLoadingConversations(true)
             const response = await axios.get("/api/chat")
-            console.log("response form chat", response.data)
+
             setConversations(response.data.conversations || [])
 
             // Toast for successful load

@@ -7,7 +7,7 @@ import { checkPremiumAccess } from "@/lib/checkPremium";
 
 connect()
 
-export async function GET(req) {
+export async function GET(request) {
     try {
         const userId = await getDataFromToken(request)
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -17,16 +17,17 @@ export async function GET(req) {
         return NextResponse.json({ tasks })
 
     } catch (error) {
+        console.log("errro in /api/task/get", error)
         return NextResponse.json({ error: "Failed to fetch tasks" }, { status: 500 })
     }
 }
 
-export async function POST(req) {
+export async function POST(request) {
     try {
         const userId = await getDataFromToken(request)
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-        const body = await req.json()
+        const body = await request.json()
         const { title, description, date, priority, dueTime, category } = body
 
         const task = await Task.create({
@@ -42,7 +43,7 @@ export async function POST(req) {
             userId,
             action: "Created Task",
             details: `Title: ${title.slice(0, 50)}...`,
-            feature: "Task Management",
+            feature: "task",
             timestamp: new Date(),
         });
 

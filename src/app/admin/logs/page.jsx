@@ -51,11 +51,11 @@ export default function LogsPage() {
         try {
             setLoading(true)
             const response = await axios.get("/api/admin/logs")
-            console.log("reponse of logs is", response.data.logs)
+
             setLogs(response.data.logs || [])
 
         } catch (error) {
-            console.error("Error fetching logs:", error)
+
             toast.error("Failed to fetch logs")
         } finally {
             setLoading(false)
@@ -88,9 +88,8 @@ export default function LogsPage() {
         fetchLogs()
     }, [])
 
-    // Filter logs based on search term and level
     const filteredLogs = logs.filter((log) => {
-        console.log("logs are ", log)
+
         const matchesSearch =
             log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
             log.details.toLowerCase().includes(searchTerm.toLowerCase()) ||

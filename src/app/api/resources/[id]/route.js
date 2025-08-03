@@ -7,7 +7,7 @@ connect()
 
 
 
-export async function DELETE(req, { params }) {
+export async function DELETE(request, { params }) {
     try {
         const userId = await getDataFromToken(request)
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

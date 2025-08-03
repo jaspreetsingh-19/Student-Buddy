@@ -50,7 +50,7 @@ export default function UserManagementPage() {
     try {
       setLoading(true)
       const response = await axios.get("/api/admin/user")
-      console.log("Fetched users:", response.data)
+
       setUsers(response.data || [])
     } catch (error) {
       console.error("Error fetching users:", error)

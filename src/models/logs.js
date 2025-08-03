@@ -6,7 +6,7 @@ const logSchema = new mongoose.Schema({
     details: String,
     feature: {
         type: String,
-        enum: ["summarizer", "roadmap", "task", "chatbot", "quiz"],
+        enum: ["summarizer", "roadmap", "task", "chatbot", "quiz", "Explore Resources"],
         required: true,
     },
 

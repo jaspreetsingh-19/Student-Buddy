@@ -23,17 +23,16 @@ export default function SignupPage() {
         e.preventDefault()
         try {
             setLoading(true)
-            console.log("started")
+                ("started")
             const response = await axios.post("/api/auth/signup", user)
-            console.log("ended")
-            console.log("registered", response.data)
+                ("ended")
+
             toast.success("registered")
             router.push("/auth/verify-email")
 
         } catch (error) {
 
-            console.log("error occured", error)
-            console.log("❌ Backend error:", error.response?.data);
+
             toast.error(error.response?.data.error)
             setLoading(false)
         } finally {
@@ -51,7 +50,7 @@ export default function SignupPage() {
                     {/* Header */}
                     <div className="p-6 pb-4 text-center">
                         <h1 className="text-xl font-semibold text-gray-900">Welcome</h1>
-                        <p className="mt-2 text-sm text-gray-600">Signup with your Apple or Google account</p>
+                        <p className="mt-2 text-sm text-gray-600">Signup with your Github or Google account</p>
                     </div>
 
                     {/* Content */}
@@ -62,15 +61,21 @@ export default function SignupPage() {
                                 <div className="flex flex-col gap-4">
                                     <button
                                         type="button"
+                                        onClick={() => router.push("/api/auth/github/redirect")}
                                         className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
                                     >
                                         <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
+                                            <path
+                                                d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.26.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.385-1.333-1.754-1.333-1.754-1.09-.745.083-.73.083-.73 1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.807 1.304 3.492.997.108-.776.418-1.305.76-1.604-2.665-.3-5.466-1.332-5.466-5.932 0-1.31.468-2.38 1.236-3.22-.124-.302-.536-1.52.116-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.552 3.296-1.23 3.296-1.23.653 1.656.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.805 5.63-5.476 5.922.43.372.823 1.1.823 2.22v3.293c0 .32.218.694.825.576C20.565 21.796 24 17.298 24 12c0-6.63-5.373-12-12-12z"
+                                            />
+
+
                                         </svg>
-                                        Signup with Apple
+                                        Signup with Github
                                     </button>
                                     <button
                                         type="button"
+                                        onClick={() => router.push("/api/auth/github/redirect")}
                                         className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
                                     >
                                         <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">

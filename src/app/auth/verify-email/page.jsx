@@ -66,20 +66,17 @@ export default function Component() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const verificationCode = code.join("").toString()
-        console.log(verificationCode)
+
         try {
             setIsLoading(true)
-            console.log("started")
+
             const response = await axios.post("/api/auth/verify-email", { code: verificationCode })
-            console.log("ended")
-            console.log("verified", response.data)
+
             toast.success("email verified ")
             router.push("/auth/login")
 
         } catch (error) {
 
-            console.log("error occured", error)
-            console.log("❌ Backend error:", error.response?.data);
             toast.error("error message")
             setIsLoading(false)
         } finally {

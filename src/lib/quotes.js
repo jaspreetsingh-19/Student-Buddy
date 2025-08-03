@@ -1,4 +1,4 @@
-// lib/quote.js
+
 
 export async function getQuote() {
     try {
@@ -12,7 +12,7 @@ export async function getQuote() {
 
 
 
-        return quote // returns just the quote text
+        return quote
 
     } catch (error) {
         console.error("Quote fetch error:", error)

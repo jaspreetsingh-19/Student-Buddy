@@ -143,11 +143,7 @@ export default function SummarizerPage() {
 
     const handleHistoryToggle = () => {
         setShowHistory(!showHistory)
-        if (!showHistory) {
-            toast.info("History panel opened")
-        } else {
-            toast.info("History panel closed")
-        }
+
     }
 
     const handleTextInputChange = (e) => {
@@ -354,6 +350,7 @@ export default function SummarizerPage() {
                                                         )}
                                                         onClick={() => loadPreviousSummary(summary)}
                                                     >
+
                                                         <div className="flex items-start justify-between gap-2">
                                                             <div className="flex-1 min-w-0">
                                                                 <h4 className="text-sm font-medium truncate">
@@ -364,19 +361,20 @@ export default function SummarizerPage() {
                                                                     <Badge variant="outline" className="text-xs px-1 py-0">
                                                                         {summary.originalInput.length} chars
                                                                     </Badge>
+                                                                    <Button
+                                                                        variant="ghost"
+                                                                        size="sm"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleDeleteSummary(summary._id)
+                                                                        }}
+                                                                        className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
+                                                                    >
+                                                                        <Trash2 className="h-3 w-3" />
+                                                                    </Button>
                                                                 </div>
                                                             </div>
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="sm"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation()
-                                                                    handleDeleteSummary(summary._id)
-                                                                }}
-                                                                className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
-                                                            >
-                                                                <Trash2 className="h-3 w-3" />
-                                                            </Button>
+
                                                         </div>
                                                     </div>
                                                     {index < previousSummaries.length - 1 && <Separator className="my-1" />}

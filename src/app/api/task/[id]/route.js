@@ -6,7 +6,7 @@ import Log from "@/models/logs"
 
 connect()
 
-export async function GET(req, { params }) {
+export async function GET(request, { params }) {
     try {
         const userId = await getDataFromToken(request)
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -16,15 +16,16 @@ export async function GET(req, { params }) {
 
         return NextResponse.json({ task })
     } catch (error) {
+        console.log("id get", error)
         return NextResponse.json({ error: "Failed to fetch task" }, { status: 500 })
     }
 }
 
-export async function PATCH(req, { params }) {
+export async function PATCH(request, { params }) {
     try {
         const userId = await getDataFromToken(request)
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        const body = await req.json()
+        const body = await request.json()
 
         const updatedTask = await Task.findOneAndUpdate({ _id: params.id, userId }, { $set: body }, { new: true })
 
@@ -33,17 +34,18 @@ export async function PATCH(req, { params }) {
             userId,
             action: "Updated Task",
             details: `Title: ${updatedTask.title.slice(0, 50)}...`,
-            feature: "Task Management",
+            feature: "task",
             timestamp: new Date(),
         });
 
         return NextResponse.json({ message: "Task updated", task: updatedTask })
     } catch (error) {
+        console.log("id update", error)
         return NextResponse.json({ error: "Failed to update task" }, { status: 500 })
     }
 }
 
-export async function DELETE(req, { params }) {
+export async function DELETE(request, { params }) {
     try {
         const userId = await getDataFromToken(request)
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -52,6 +54,7 @@ export async function DELETE(req, { params }) {
 
         return NextResponse.json({ message: "Task deleted" })
     } catch (error) {
+        console.log("id delete", error)
         return NextResponse.json({ error: "Failed to delete task" }, { status: 500 })
     }
 }

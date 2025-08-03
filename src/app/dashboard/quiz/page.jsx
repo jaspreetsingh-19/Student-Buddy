@@ -339,7 +339,7 @@ const QuizDashboard = () => {
                                 <Label htmlFor="topic">Topic</Label>
                                 <Input
                                     id="topic"
-                                    placeholder="Enter quiz topic (e.g., JavaScript, History, Math)"
+                                    placeholder="Enter quiz topic (e.g., JavaScript, History"
                                     value={quizForm.topic}
                                     onChange={(e) => setQuizForm(prev => ({ ...prev, topic: e.target.value }))}
                                 />

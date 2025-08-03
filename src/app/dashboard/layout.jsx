@@ -24,7 +24,8 @@ import {
     Crown,
     Lock,
     HelpCircle,
-    Loader2
+    Loader2,
+    GraduationCap
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -106,14 +107,7 @@ const getNavigationItems = (userPlan, usageCount = {}) => [
         isLocked: userPlan === 'free',
         usageInfo: null
     },
-    {
-        title: "Messages",
-        url: "/messages",
-        icon: Mail,
-        isPremium: false,
-        isLocked: false,
-        usageInfo: null
-    },
+
 ]
 
 const settingsItems = [
@@ -206,7 +200,7 @@ export default function DashboardLayout({ children }) {
                 // Fetch usage statistics for free users
                 if (getUserPlan(res.data) === 'free') {
                     const usageRes = await axios.get("/api/usage")
-                    console.log("usage", usageRes)
+
 
                     setUsageCount(usageRes.data)
                 }
@@ -288,7 +282,7 @@ export default function DashboardLayout({ children }) {
             const response = await axios.get("/api/auth/logout")
             router.push("/auth/login")
         } catch (error) {
-            console.log("error occurred", error)
+
             toast.error("Something Went Wrong")
         }
     }
@@ -304,7 +298,7 @@ export default function DashboardLayout({ children }) {
                     </Button>
                     <div className="flex items-center gap-2">
                         <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                            <BarChart3 className="size-4" />
+                            <GraduationCap className="size-4" />
                         </div>
                         <h1 className="text-lg font-semibold">Student Buddy</h1>
                         {!isLoading && userPlan === 'premium' && (
@@ -418,23 +412,7 @@ export default function DashboardLayout({ children }) {
                                 </div>
 
                                 {/* Account Section */}
-                                <div>
-                                    <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                                        Account
-                                    </h3>
-                                    <nav className="space-y-1">
-                                        {settingsItems.map((item) => (
-                                            <a
-                                                key={item.title}
-                                                href={item.url}
-                                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
-                                            >
-                                                <item.icon className="h-4 w-4" />
-                                                {item.title}
-                                            </a>
-                                        ))}
-                                    </nav>
-                                </div>
+
                             </div>
                         </div>
 

@@ -7,7 +7,7 @@ import { checkPremiumAccess } from "@/lib/checkPremium";
 
 connect();
 
-export async function DELETE(req, { params }) {
+export async function DELETE(request, { params }) {
     try {
         const userId = await getDataFromToken(request)
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -17,6 +17,7 @@ export async function DELETE(req, { params }) {
 
         return NextResponse.json({ message: "Roadmap deleted" })
     } catch (error) {
+        console.log("error in roadmap delete", error)
         return NextResponse.json({ error: "Failed to delete roadmap" }, { status: 500 })
     }
 }

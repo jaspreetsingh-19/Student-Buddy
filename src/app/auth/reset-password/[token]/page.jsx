@@ -34,7 +34,7 @@ export default function ResetPasswordPage() {
 
         try {
             setLoading(true)
-            console.log("Resetting password")
+
 
             const response = await axios.post(`/api/auth/reset-password/${token}`, {
                 password: passwords.confirmPassword,
@@ -46,11 +46,9 @@ export default function ResetPasswordPage() {
                 throw new Error(data.error || "Failed to reset password")
             }
 
-            console.log("Password reset successful")
             toast.success("Password reset successfully!")
             router.push("/auth/login")
         } catch (error) {
-            console.log("Error occurred:", error)
             toast.error("Failed to reset password")
         } finally {
             setLoading(false)

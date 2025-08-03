@@ -51,6 +51,6 @@ export async function POST(req) {
         );
     } catch (error) {
         console.error("error in payment:", error);
-        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+        return NextResponse.json({ error: `Something went wrong ${error}` }, { status: 500 });
     }
 }

@@ -5,6 +5,7 @@ import { getAIResponse } from "@/lib/aiForChatbot"
 import { getDataFromToken } from "@/helper/getDataFromToken"
 import Log from "@/models/logs"
 import User from "@/models/user"
+import Usage from "@/models/usage"
 import { checkPremiumAccess } from "@/lib/checkPremium";
 
 
