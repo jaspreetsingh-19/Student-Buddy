@@ -1,10 +1,10 @@
-// /app/api/user/usage/route.js
 import { NextResponse } from 'next/server'
 import { getDataFromToken } from "@/helper/getDataFromToken"
 
-import connect from '@/lib/db' // Adjust path to your DB connection
+import connect from '@/lib/db'
 import User from '@/models/user'
 import Usage from '@/models/usage'
+
 
 connect();
 
@@ -25,7 +25,7 @@ export async function GET(request) {
             )
         }
 
-        // If user is premium, return unlimited (no need to track usage)
+
         const isPremiumActive = user.isPremium && new Date(user.premiumExpires) > new Date()
 
         if (isPremiumActive) {
@@ -38,13 +38,11 @@ export async function GET(request) {
             })
         }
 
-        // Get today's date range for daily limits
         const today = new Date()
         today.setHours(0, 0, 0, 0)
 
-        // Get this week's date range for weekly limits
         const startOfWeek = new Date(today)
-        startOfWeek.setDate(today.getDate() - today.getDay()) // Sunday
+        startOfWeek.setDate(today.getDate() - today.getDay())
 
         // Find usage records
         const [dailyUsage, weeklyUsage] = await Promise.all([
@@ -60,7 +58,7 @@ export async function GET(request) {
             })
         ])
 
-        // Return current usage counts
+
         return NextResponse.json({
             doubts: dailyUsage?.doubts || 0,
             summaries: dailyUsage?.summaries || 0,
@@ -82,7 +80,7 @@ export async function GET(request) {
     }
 }
 
-// POST method to increment usage (called when user uses a feature)
+
 export async function POST(request) {
     try {
         const userId = await getDataFromToken(request);
@@ -129,12 +127,11 @@ export async function POST(request) {
             roadmaps: 1
         }
 
-        // Determine if this is a daily or weekly feature
+
         const isWeeklyFeature = feature === 'roadmaps'
 
         let dateToUse, usageType
         if (isWeeklyFeature) {
-            // Weekly tracking
             const today = new Date()
             const startOfWeek = new Date(today)
             startOfWeek.setDate(today.getDate() - today.getDay())
@@ -143,7 +140,7 @@ export async function POST(request) {
             dateToUse = startOfWeek
             usageType = 'weekly'
         } else {
-            // Daily tracking
+
             const today = new Date()
             today.setHours(0, 0, 0, 0)
 
@@ -151,14 +148,14 @@ export async function POST(request) {
             usageType = 'daily'
         }
 
-        // Find existing usage record
+
         let usage = await Usage.findOne({
             userId: user._id,
             date: dateToUse,
             type: usageType
         })
 
-        // If no usage record exists, create one
+
         if (!usage) {
             usage = new Usage({
                 userId: user._id,
@@ -167,7 +164,6 @@ export async function POST(request) {
             })
         }
 
-        // Check if user would exceed limit
         const currentCount = usage[feature] || 0
         const limit = limits[feature]
 
@@ -184,7 +180,7 @@ export async function POST(request) {
             )
         }
 
-        // Increment the usage
+
         usage[feature] = currentCount + 1
         await usage.save()
 

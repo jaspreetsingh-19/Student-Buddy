@@ -9,7 +9,7 @@ export async function GET(req) {
     const code = url.searchParams.get("code");
     if (!code) return NextResponse.redirect(`${process.env.NEXT_PUBLIC_CLIENT_URL}/login?error=OAuthFailed`);
 
-    // Exchange code for access token
+
     const tokenRes = await axios.post("https://github.com/login/oauth/access_token", {
         client_id: process.env.GITHUB_CLIENT_ID,
         client_secret: process.env.GITHUB_CLIENT_SECRET,

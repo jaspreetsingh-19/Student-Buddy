@@ -77,10 +77,10 @@ const getInitials = (username) => {
     const parts = username.trim().split(" ");
     console.log("parts are", parts)
     if (parts.length === 1) {
-        return parts[0].substring(0, 2).toUpperCase(); // e.g., "john" => "JO"
+        return parts[0].substring(0, 2).toUpperCase();
     }
 
-    return (parts[0][0] + parts[1][0]).toUpperCase(); // e.g., "new one" => "NO"
+    return (parts[0][0] + parts[1][0]).toUpperCase();
 };
 
 
@@ -128,17 +128,17 @@ export default function DashboardLayout({ children }) {
         try {
 
             console.log("started")
+            toast.success("logging out")
             const response = await axios.get("/api/auth/logout")
             console.log("ended")
             console.log("logged out", response.data)
-            // toast.success("logged out")
             router.push("/auth/login")
 
         } catch (error) {
 
             console.log("error occured", error)
+            toast.error("Something went wrong")
             console.log("❌ Backend error:", error.response?.data);
-            // toast.error("errormessage")
 
         }
     }

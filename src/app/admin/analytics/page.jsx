@@ -22,12 +22,11 @@ export default function AdminAnalytics() {
     useEffect(() => {
         const fetchAnalytics = async () => {
             try {
-                // Fetch feature usage data (your existing endpoint)
+
                 const featureRes = await fetch("/api/admin/analytics");
                 const featureResult = await featureRes.json();
                 setFeatureData(featureResult);
 
-                // Fetch user login data based on lastLogin field
                 const loginRes = await fetch("/api/admin/user-activity");
                 const loginResult = await loginRes.json();
                 setUserLoginData(loginResult);

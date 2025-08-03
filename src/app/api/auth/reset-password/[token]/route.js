@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { sendPasswordResetEmailSuccess } from "@/helper/mailtrap.config";
 
 export async function POST(request, { params }) {
-    await connect(); // ✅ Ensure DB is connected inside the handler
+    await connect();
 
 
     try {

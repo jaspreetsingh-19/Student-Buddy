@@ -21,46 +21,32 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Loader2, Search, Plus, FileText, AlertCircle, CheckCircle, XCircle, Info, Calendar } from "lucide-react"
 import toast from "react-hot-toast"
 
-interface Log {
-    _id: string
-    userId?: string
-    action: string
-    details: string
-    feature: "summarizer" | "roadmap" | "task" | "chatbot" | "quiz"
-    timestamp: string
-    user?: {
-        username: string
-        email: string
-    }
-}
 
 const logLevelConfig = {
-    info: { icon: Info, color: "bg-blue-500", variant: "secondary" as const },
-    warning: { icon: AlertCircle, color: "bg-yellow-500", variant: "outline" as const },
-    error: { icon: XCircle, color: "bg-red-500", variant: "destructive" as const },
-    success: { icon: CheckCircle, color: "bg-green-500", variant: "default" as const },
+    info: { icon: Info, color: "bg-blue-500", variant: "secondary" },
+    warning: { icon: AlertCircle, color: "bg-yellow-500", variant: "outline" },
+    error: { icon: XCircle, color: "bg-red-500", variant: "destructive" },
+    success: { icon: CheckCircle, color: "bg-green-500", variant: "default" },
 }
 
 export default function LogsPage() {
-    const [logs, setLogs] = useState<Log[]>([])
+    const [logs, setLogs] = useState([])
     const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
-    const [levelFilter, setLevelFilter] = useState<string>("all")
+    const [levelFilter, setLevelFilter] = useState < string > ("all")
     const [createDialogOpen, setCreateDialogOpen] = useState(false)
     const [creating, setCreating] = useState(false)
-
-    // Form state for creating new log
     const [newLog, setNewLog] = useState({
         action: "",
         details: "",
-        feature: "summarizer" as Log["feature"],
+        feature: "summarizer",
     })
 
     useEffect(() => {
         fetchLogs()
     }, [])
 
-    // Fetch logs
+
     const fetchLogs = async () => {
         try {
             setLoading(true)
@@ -76,7 +62,7 @@ export default function LogsPage() {
         }
     }
 
-    // Create new log
+
     const handleCreateLog = async () => {
         if (!newLog.action.trim() || !newLog.details.trim()) {
             toast.error("Please fill in all required fields")
@@ -158,7 +144,7 @@ export default function LogsPage() {
                                 <Label htmlFor="feature">Feature</Label>
                                 <Select
                                     value={newLog.feature}
-                                    onValueChange={(value: Log["feature"]) => setNewLog({ ...newLog, feature: value })}
+                                    onValueChange={(value) => setNewLog({ ...newLog, feature: value })}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select log feature" />

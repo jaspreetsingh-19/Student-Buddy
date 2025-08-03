@@ -74,7 +74,6 @@ export async function POST(request) {
             return NextResponse.json({ error: "Failed to generate valid quiz questions" }, { status: 500 });
         }
 
-        // Create Quiz
         const quiz = new Quiz({
             userId,
             title: `${topic} Quiz - ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}`,
@@ -87,7 +86,6 @@ export async function POST(request) {
 
         const savedQuiz = await quiz.save();
 
-        // Create Questions
         const questionIds = [];
         for (const questionData of parsedQuestions.questions) {
             const question = new Question({
@@ -105,11 +103,9 @@ export async function POST(request) {
             questionIds.push(savedQuestion._id);
         }
 
-        // Update quiz with question IDs
         savedQuiz.questions = questionIds;
         await savedQuiz.save();
 
-        // Log the quiz generation
         const log = new Log({
             userId,
             action: 'QUIZ_GENERATED',
@@ -119,7 +115,6 @@ export async function POST(request) {
         });
         await log.save();
 
-        // Return the complete quiz with questions
         const completeQuiz = await Quiz.findById(savedQuiz._id).populate('questions');
 
         return NextResponse.json({
@@ -145,16 +140,16 @@ export async function DELETE(request) {
             return NextResponse.json({ error: "Quiz ID is required" }, { status: 400 });
         }
 
-        // Find the quiz and verify ownership
+
         const quiz = await Quiz.findOne({ _id: quizId, userId });
         if (!quiz) {
             return NextResponse.json({ error: "Quiz not found or unauthorized" }, { status: 404 });
         }
 
-        // Delete all questions associated with this quiz
+
         await Question.deleteMany({ quizId });
 
-        // Delete the quiz
+
         await Quiz.findByIdAndDelete(quizId);
 
 

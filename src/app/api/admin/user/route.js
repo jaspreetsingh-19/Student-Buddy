@@ -6,9 +6,7 @@ import { isAdmin } from "@/lib/adminProtect"
 connect();
 
 export async function GET(request) {
-    // if (!await isAdmin(request)) {
-    //     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-    // }
+
 
     try {
         const users = await User.find().select("-password")
@@ -23,9 +21,7 @@ export async function GET(request) {
 
 
 export async function DELETE(request) {
-    // if (!await isAdmin(request)) {
-    //     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-    // }
+
     try {
         const { userId } = await request.json();
         if (!userId) {
@@ -43,9 +39,7 @@ export async function DELETE(request) {
 
 
 export async function PATCH(request) {
-    // if (!await isAdmin(request)) {
-    //     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-    // }
+
     try {
 
         const { userId, actionRequest } = await request.json()

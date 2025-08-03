@@ -52,14 +52,11 @@ async function trackUsage(userId, feature) {
 export async function POST(request) {
     try {
         const userId = await getDataFromToken(request)
-
-        // if (!user) return NextResponse.json({ error: "Buy Premium" }, { status: 403 });
         const { input } = await request.json()
         if (!input) return NextResponse.json({ error: "Input is required" }, { status: 400 })
 
         console.log("Processing text input, length:", input.length)
 
-        // Check if we have content to summarize
         if (!input || input.trim().length === 0) {
             console.error("No content available for summarization")
             return NextResponse.json(
@@ -128,7 +125,6 @@ Output Format:
 
         console.log("Summary generated successfully, length:", summary.length)
 
-        // Save to database
         const savedSummary = await Summary.create({
             userId,
             originalInput: input,
@@ -156,7 +152,6 @@ Output Format:
     } catch (error) {
         console.error("Error creating summary:", error)
 
-        // Handle specific Gemini API errors
         if (error.message?.includes("API key")) {
             return NextResponse.json({ error: "AI service configuration error" }, { status: 500 })
         } else if (error.message?.includes("quota")) {

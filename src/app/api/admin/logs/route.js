@@ -7,10 +7,7 @@ connect();
 
 export async function GET(request) {
     try {
-        // const isAdminUser = await isAdmin(request);
-        // if (!isAdminUser) {
-        //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        // }
+
 
         const logs = await Log.find().sort({ timestamp: -1 }).limit(100);
 

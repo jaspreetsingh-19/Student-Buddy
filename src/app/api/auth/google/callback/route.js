@@ -9,7 +9,7 @@ export async function GET(req) {
     const code = url.searchParams.get("code")
     if (!code) return NextResponse.redirect(`${process.env.NEXT_PUBLIC_CLIENT_URL}/login?error=OAuthFailed`)
 
-    // Exchange code for tokens
+
     const tokenRes = await axios.post("https://oauth2.googleapis.com/token", {
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
@@ -20,7 +20,7 @@ export async function GET(req) {
 
     const access_token = tokenRes.data.access_token
 
-    // Get user info
+
     const userInfo = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
         headers: {
             Authorization: `Bearer ${access_token}`
@@ -45,7 +45,7 @@ export async function GET(req) {
         expiresIn: "7d"
     })
 
-    // Redirect to frontend with token
+
     const response = NextResponse.redirect(`${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard`)
     response.cookies.set("token", token, {
         httpOnly: true,

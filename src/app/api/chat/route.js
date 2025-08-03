@@ -65,33 +65,32 @@ export async function GET(req) {
         allMessages.forEach(message => {
             const convId = message.conversationId;
 
-            // If this conversation doesn't exist in our groups, create it
+
             if (!conversationGroups[convId]) {
                 conversationGroups[convId] = [];
             }
 
-            // Add message to this conversation group
             conversationGroups[convId].push(message);
         });
 
-        // Convert grouped messages into conversation summaries
+
         const conversations = [];
 
         for (const [conversationId, messages] of Object.entries(conversationGroups)) {
-            const firstMessage = messages[0]; // First message (oldest)
-            const lastMessage = messages[messages.length - 1]; // Last message (newest)
+            const firstMessage = messages[0];
+            const lastMessage = messages[messages.length - 1];
             const messageCount = messages.length;
 
             conversations.push({
                 conversationId: conversationId,
-                title: firstMessage.content.substring(0, 50), // First 50 chars as title
+                title: firstMessage.content.substring(0, 50),
                 messageCount: messageCount,
                 lastActivity: lastMessage.timestamp,
-                preview: lastMessage.content.substring(0, 100) // Last 100 chars as preview
+                preview: lastMessage.content.substring(0, 100)
             });
         }
 
-        // Sort conversations by last activity (newest first)
+
         conversations.sort((a, b) => {
             return new Date(b.lastActivity) - new Date(a.lastActivity);
         });
@@ -134,10 +133,8 @@ export async function POST(req) {
         });
 
 
-        // Get AI response (no history for first message)
         const aiResponse = await getAIResponse(message, []);
 
-        // Save AI response
         const assistantMessage = await Message.create({
             userId,
             conversationId,

@@ -1,4 +1,4 @@
-// pages/api/admin/user-activity.js or app/api/admin/user-activity/route.js
+
 
 import { NextResponse } from 'next/server';
 import User from "@/models/user"
@@ -7,7 +7,7 @@ import connect from "@/lib/db";
 connect();
 export async function GET() {
     try {
-        // Get user login data grouped by date from lastLogin field
+
         const userLoginData = await User.aggregate([
             {
                 $match: {

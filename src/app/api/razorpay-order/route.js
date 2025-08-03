@@ -4,7 +4,7 @@ import connect from "@/lib/db";
 import Payment from "@/models/payment";
 import { getDataFromToken } from "@/helper/getDataFromToken";
 
-await connect(); // Ensure DB connection
+await connect();
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -40,7 +40,7 @@ export async function POST(req) {
             orderId: razorpayOrder.id,
             currency: "INR",
             premiumType,
-            status: "pending", // initially not paid
+            status: "pending",
         });
 
         return NextResponse.json(

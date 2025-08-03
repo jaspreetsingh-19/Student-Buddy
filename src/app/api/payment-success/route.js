@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { NextResponse } from "next/server";
 import connect from "@/lib/db";
-import User from "@/models/user"; // adjust the path accordingly
+import User from "@/models/user";
 import { getDataFromToken } from "@/helper/getDataFromToken"
 
 
@@ -18,10 +18,9 @@ export async function POST(req) {
         razorpay_payment_id,
         razorpay_signature,
 
-        premiumType, // must be passed from client as "monthly" or "yearly"
+        premiumType,
     } = body;
 
-    // Step 1: Verify signature
     const generated_signature = crypto
         .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
         .update(razorpay_order_id + "|" + razorpay_payment_id)
@@ -31,7 +30,7 @@ export async function POST(req) {
         return new NextResponse("Invalid payment signature", { status: 400 });
     }
 
-    // Step 2: Calculate expiry date
+
     let expiresAt = new Date();
     if (premiumType === "monthly") {
         expiresAt.setDate(expiresAt.getDate() + 30);
@@ -41,7 +40,6 @@ export async function POST(req) {
         return new NextResponse("Invalid premium type", { status: 400 });
     }
 
-    // Step 3: Update user in MongoDB
     try {
         await User.findByIdAndUpdate(userId, {
             isPremium: true,
