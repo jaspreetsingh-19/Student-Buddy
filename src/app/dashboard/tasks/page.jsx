@@ -309,14 +309,8 @@ export default function TasksContent() {
 
     const handleDialogOpen = (isOpen) => {
         setIsAddDialogOpen(isOpen)
-        if (isOpen) {
-            toast.info("Add task dialog opened")
-        } else {
-            toast.info("Add task dialog closed")
-            if (newTask.title || newTask.description || newTask.category) {
-                toast.info("Unsaved changes discarded")
-            }
-        }
+
+
     }
 
     const handleEditDialogOpen = (isOpen) => {

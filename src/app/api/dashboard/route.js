@@ -17,10 +17,12 @@ connect();
 export async function GET(request) {
     const userId = await getDataFromToken(request)
     if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    console.log("user id", userId)
 
     try {
 
-        const remainingTask = await Task.find({ user: userId, isCompleted: false });
+        const remainingTask = await Task.find({ userId, isCompleted: false });
+        console.log("task are", remainingTask)
         return NextResponse.json({ remainingTask });
 
     } catch (error) {

@@ -25,7 +25,7 @@ import {
     Lock,
     HelpCircle,
     Loader2,
-    GraduationCap
+    Brain
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -35,7 +35,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 
-// Feature usage limits for free users
 const FREE_LIMITS = {
     doubts: 3,
     summaries: 2,
@@ -110,18 +109,6 @@ const getNavigationItems = (userPlan, usageCount = {}) => [
 
 ]
 
-const settingsItems = [
-    {
-        title: "Profile",
-        url: "/profile",
-        icon: User,
-    },
-    {
-        title: "Settings",
-        url: "/settings",
-        icon: Settings,
-    },
-]
 
 const getInitials = (username) => {
     if (!username) return "";
@@ -280,7 +267,7 @@ export default function DashboardLayout({ children }) {
         try {
             toast.success("logging out plz wait...")
             const response = await axios.get("/api/auth/logout")
-            router.push("/auth/login")
+            router.push("/")
         } catch (error) {
 
             toast.error("Something Went Wrong")
@@ -297,8 +284,8 @@ export default function DashboardLayout({ children }) {
                         <span className="sr-only">Toggle sidebar</span>
                     </Button>
                     <div className="flex items-center gap-2">
-                        <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                            <GraduationCap className="size-4" />
+                        <div className="w-10 h-10 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl flex items-center justify-center">
+                            <Brain className="h-6 w-6 text-white" />
                         </div>
                         <h1 className="text-lg font-semibold">Student Buddy</h1>
                         {!isLoading && userPlan === 'premium' && (

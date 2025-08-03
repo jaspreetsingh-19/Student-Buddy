@@ -23,6 +23,7 @@ export default function LoginPage() {
 
             setLoading(true)
 
+            toast.success("logging in plz wait...")
             const response = await axios.post("/api/auth/login", user)
 
             if (response.data.role === "admin") {
@@ -31,7 +32,6 @@ export default function LoginPage() {
                 router.push("/dashboard");
             }
 
-            toast.success("logging in plz wait...")
 
 
 

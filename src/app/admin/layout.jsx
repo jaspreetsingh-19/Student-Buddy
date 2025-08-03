@@ -59,18 +59,7 @@ const navigationItems = [
 
 ]
 
-const settingsItems = [
-    {
-        title: "Profile",
-        url: "/profile",
-        icon: User,
-    },
-    {
-        title: "Settings",
-        url: "/settings",
-        icon: Settings,
-    },
-]
+
 const getInitials = (username) => {
     if (!username) return "";
 
@@ -216,24 +205,8 @@ export default function DashboardLayout({ children }) {
                                     </nav>
                                 </div>
 
-                                {/* Account Section */}
-                                <div>
-                                    <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                                        Account
-                                    </h3>
-                                    <nav className="space-y-1">
-                                        {settingsItems.map((item) => (
-                                            <a
-                                                key={item.title}
-                                                href={item.url}
-                                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
-                                            >
-                                                <item.icon className="h-4 w-4" />
-                                                {item.title}
-                                            </a>
-                                        ))}
-                                    </nav>
-                                </div>
+
+
                             </div>
                         </div>
 
