@@ -1,11 +1,11 @@
 import connect from "@/lib/db"
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import Question from "@/models/quizQuestion"
 import Quiz from "@/models/quiz"
 import { getDataFromToken } from "@/helper/getDataFromToken"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import Log from "@/models/logs"
-import { features } from "process"
+
 
 connect();
 

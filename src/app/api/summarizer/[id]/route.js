@@ -2,7 +2,7 @@ import connect from "@/lib/db";
 import { NextResponse } from "next/server";
 import Summary from "@/models/summarizer";
 import { getDataFromToken } from "@/helper/getDataFromToken"
-import { checkPremiumAccess } from "@/lib/checkPremium";
+
 
 
 

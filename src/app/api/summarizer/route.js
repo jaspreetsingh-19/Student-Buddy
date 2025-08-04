@@ -5,8 +5,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai"
 import { getDataFromToken } from "@/helper/getDataFromToken"
 import Log from "@/models/logs"
 import Usage from "@/models/usage"
-import { checkPremiumAccess } from "@/lib/checkPremium";
 import User from "@/models/user";
+
 
 
 connect()

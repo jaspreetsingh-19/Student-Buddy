@@ -2,7 +2,7 @@ import connect from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server"
 import ExploreResource from "@/models/resources"
 import { getDataFromToken } from "@/helper/getDataFromToken"
-import { checkPremiumAccess } from "@/lib/checkPremium";
+
 connect()
 
 

@@ -3,7 +3,6 @@ import { NextResponse } from "next/server"
 import Message from "@/models/message"
 import { getAIResponse } from "@/lib/aiForChatbot"
 import { getDataFromToken } from "@/helper/getDataFromToken"
-import { checkPremiumAccess } from "@/lib/checkPremium";
 
 import Log from "@/models/logs"
 

@@ -1,13 +1,8 @@
 import connect from "@/lib/db"
-import { NextRequest, NextResponse } from "next/server"
-
-import Quiz from "@/models/quiz"
-import Message from "@/models/message"
-import ExploreResource from "@/models/resources"
-import Roadmap from "@/models/roadmap"
-import Summary from "@/models/summarizer"
+import { NextResponse } from "next/server"
 import Task from "@/models/task"
-import User from "@/models/user"
+
+
 
 import { getDataFromToken } from "@/helper/getDataFromToken"
 

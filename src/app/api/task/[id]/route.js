@@ -1,5 +1,5 @@
 import connect from "@/lib/db"
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import Task from "@/models/task"
 import { getDataFromToken } from "@/helper/getDataFromToken"
 import Log from "@/models/logs"

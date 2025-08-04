@@ -1,10 +1,10 @@
 import connect from "@/lib/db"
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import ExploreResource from "@/models/resources"
 import { getDataFromToken } from "@/helper/getDataFromToken"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import Log from "@/models/logs"
-import { checkPremiumAccess } from "@/lib/checkPremium";
+
 
 
 connect()

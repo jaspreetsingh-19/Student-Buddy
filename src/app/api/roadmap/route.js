@@ -4,7 +4,7 @@ import Roadmap from "@/models/roadmap";
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { getDataFromToken } from "@/helper/getDataFromToken"
 import Log from "@/models/logs"
-import { checkPremiumAccess } from "@/lib/checkPremium";
+
 
 connect();
 

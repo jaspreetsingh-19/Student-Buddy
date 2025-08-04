@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import Task from "@/models/task"
 import { getDataFromToken } from "@/helper/getDataFromToken"
 import Log from "@/models/logs"
-import { checkPremiumAccess } from "@/lib/checkPremium";
+
 
 connect()
 
