@@ -1,6 +1,6 @@
 # 🎓 Student Buddy
 
-**Student Buddy** is your all-in-one AI-powered academic assistant built with Next.js 15, Gemini AI, Razorpay, and MongoDB. It helps students stay on top of their tasks, generate roadmaps, summarize content (including YouTube videos), generate AI-powered quizzes, and much more — all from a beautiful, intuitive dashboard.
+**Student Buddy** is your all-in-one AI-powered academic assistant built with Next.js 15, Gemini AI, Razorpay, and MongoDB. It helps students stay on top of their tasks, generate roadmaps, summarize content, generate AI-powered quizzes, and much more — all from a beautiful, intuitive dashboard.
 
 ![Student Buddy Preview](https://your-screenshot-url.com)
 
@@ -8,13 +8,13 @@
 
 ## 🚀 Features
 
-- ✅ **Authentication** with secure JWT token flow
+- ✅ **Authentication** with secure JWT flow: OAuth login, email verification, forgot/reset password
 - 📅 **Daily Task Manager** — create and view tasks by date
 - 🧠 **AI Summarizer** — summarize text or YouTube videos
 - 🧭 **Roadmap Generator** — get AI-powered career & topic paths
 - 📚 **Resource Library** — explore curated resources with search
 - 📝 **Quiz Generator** — create quizzes with difficulty & question count
-- 👨‍💼 **Admin Panel** — manage users, content, and summaries
+- 👨‍💼 **Admin Panel** — manage users, analytics, and logs
 - 💳 **Razorpay Integration** — support for premium plans with webhook handling
 - 🧩 Built with **Modular & Scalable Architecture**
 
