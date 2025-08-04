@@ -79,7 +79,7 @@ export default function UserManagementPage() {
   const handlePromoteUser = async (userId: string) => {
     try {
       setActionLoading(userId)
-      let actionRequest = "PROMOTE"
+      const actionRequest = "PROMOTE"
       const response = await axios.patch("/api/admin/user", { userId, actionRequest })
       setUsers(users.map((user) => (user._id === userId ? { ...user, role: "admin" } : user)))
       toast.success("User promoted to admin successfully")
@@ -91,11 +91,11 @@ export default function UserManagementPage() {
     }
   }
 
-  // Demote admin to user
+
   const handleDemoteUser = async (userId: string) => {
     try {
       setActionLoading(userId)
-      let actionRequest = "DEMOTE"
+      const actionRequest = "DEMOTE"
       await axios.patch("/api/admin/user", { userId, actionRequest })
       setUsers(users.map((user) => (user._id === userId ? { ...user, role: "student" } : user)))
       toast.success("Admin demoted to user successfully")
