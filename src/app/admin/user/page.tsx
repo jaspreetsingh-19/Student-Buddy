@@ -42,7 +42,7 @@ export default function UserManagementPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+
   const [actionLoading, setActionLoading] = useState<string | null>(null)
 
   // Fetch users
