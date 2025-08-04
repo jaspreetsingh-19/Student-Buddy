@@ -33,7 +33,7 @@ export default function LogsPage() {
     const [logs, setLogs] = useState([])
     const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
-    const [levelFilter, setLevelFilter] = useState < string > ("all")
+    const [levelFilter, setLevelFilter] = useState("all")
     const [createDialogOpen, setCreateDialogOpen] = useState(false)
     const [creating, setCreating] = useState(false)
     const [newLog, setNewLog] = useState({
