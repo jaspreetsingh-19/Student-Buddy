@@ -74,7 +74,7 @@ export async function POST(req) {
             userId,
             action: "Sent Message in Existing Doubt Chat",
             details: `User message: ${message.slice(0, 50)}...`,
-            feature: "chat",
+            feature: "chatbot",
             timestamp: new Date(),
         });
 
