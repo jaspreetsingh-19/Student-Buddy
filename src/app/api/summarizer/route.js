@@ -84,7 +84,7 @@ export async function POST(request) {
         }
 
         const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY)
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
         const prompt = `
 You are a highly intelligent and versatile summarizer with expert-level understanding across all subjects and domains.
@@ -121,7 +121,7 @@ Output Format:
 
         console.log("Sending to Gemini for summarization...")
         const result = await model.generateContent(prompt)
-        const summary = result.response.text()
+        const summary = result?.response?.text() || "No summary generated";
 
         console.log("Summary generated successfully, length:", summary.length)
 
