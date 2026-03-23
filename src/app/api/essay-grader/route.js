@@ -78,19 +78,42 @@ Provide a detailed, fair, and encouraging assessment. Return ONLY valid JSON (no
     "vocabulary": "<detailed feedback on word choice and language use>"
   },
   "suggestions": ["<specific actionable suggestion 1>", "<specific actionable suggestion 2>", "<specific actionable suggestion 3>"]
+
+  Return ONLY valid JSON.
+Do NOT include markdown, backticks, or explanations.
+Ensure the JSON is strictly valid and parsable.
 }`
+
 
         const result = await model.generateContent(prompt)
         const responseText = result.response.text().trim()
 
-        let feedback
-        try {
-            const cleaned = responseText.replace(/```json|```/g, "").trim()
-            feedback = JSON.parse(cleaned)
-        } catch {
-            return NextResponse.json({ error: "Failed to parse AI response" }, { status: 500 })
-        }
+        let feedback;
 
+try {
+    const cleaned = responseText
+        .replace(/```json|```/g, "")
+        .trim();
+
+    const jsonStart = cleaned.indexOf("{");
+    const jsonEnd = cleaned.lastIndexOf("}");
+
+    if (jsonStart === -1 || jsonEnd === -1) {
+        throw new Error("No JSON found in response");
+    }
+
+    const jsonString = cleaned.slice(jsonStart, jsonEnd + 1);
+
+    feedback = JSON.parse(jsonString);
+
+} catch (err) {
+    console.error("RAW AI RESPONSE:", responseText);
+
+    return NextResponse.json(
+        { error: "AI returned invalid format" },
+        { status: 500 }
+    );
+}
         const essay = new Essay({
             userId,
             title,
