@@ -1,6 +1,6 @@
 import connect from "@/lib/db"
 import { NextResponse } from "next/server"
-import Flashcard from "@/models/flashcard"
+import Flashcard from "@/models/Flashcard"
 import { getDataFromToken } from "@/helper/getDataFromToken"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import Log from "@/models/logs"

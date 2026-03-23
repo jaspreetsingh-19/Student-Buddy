@@ -1,6 +1,6 @@
 import connect from "@/lib/db"
 import { NextResponse } from "next/server"
-import Essay from "@/models/essay"
+import Essay from "@/models/Essay"
 import { getDataFromToken } from "@/helper/getDataFromToken"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import Log from "@/models/logs"
