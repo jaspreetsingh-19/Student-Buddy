@@ -18,7 +18,9 @@ import {
     Brain,
     CheckCircle,
     XCircle,
-    BarChart3
+    BarChart3,
+    Sparkles,
+    Loader2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -31,11 +33,178 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useRouter } from 'next/navigation';
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
+
+// Renders a string that may contain LaTeX delimiters: $...$ or \[...\]
+// Falls back to plain text for non-math content.
+const MathText = ({ text }) => {
+    if (!text) return null;
+
+    // Split on block math \[...\] first, then inline $...$
+    const parts = [];
+    let remaining = text;
+    const blockRegex = /\\\[([\s\S]+?)\\\]/g;
+    const inlineRegex = /\$([^$]+)\$/g;
+
+    // Replace block math
+    let lastIndex = 0;
+    let match;
+    blockRegex.lastIndex = 0;
+    while ((match = blockRegex.exec(text)) !== null) {
+        if (match.index > lastIndex) {
+            parts.push({ type: 'text', content: text.slice(lastIndex, match.index) });
+        }
+        parts.push({ type: 'block', content: match[1] });
+        lastIndex = match.index + match[0].length;
+    }
+    if (lastIndex < text.length) {
+        parts.push({ type: 'text', content: text.slice(lastIndex) });
+    }
+
+    // Now process inline math within text segments
+    const finalParts = [];
+    for (const part of parts) {
+        if (part.type !== 'text') {
+            finalParts.push(part);
+            continue;
+        }
+        let subLast = 0;
+        inlineRegex.lastIndex = 0;
+        let subMatch;
+        while ((subMatch = inlineRegex.exec(part.content)) !== null) {
+            if (subMatch.index > subLast) {
+                finalParts.push({ type: 'text', content: part.content.slice(subLast, subMatch.index) });
+            }
+            finalParts.push({ type: 'inline', content: subMatch[1] });
+            subLast = subMatch.index + subMatch[0].length;
+        }
+        if (subLast < part.content.length) {
+            finalParts.push({ type: 'text', content: part.content.slice(subLast) });
+        }
+    }
+
+    if (finalParts.length === 0) return <span>{text}</span>;
+
+    return (
+        <span>
+            {finalParts.map((part, i) => {
+                if (part.type === 'block') {
+                    return (
+                        <span key={i} className="block my-2">
+                            <BlockMath math={part.content} />
+                        </span>
+                    );
+                }
+                if (part.type === 'inline') {
+                    return <InlineMath key={i} math={part.content} />;
+                }
+                return <span key={i}>{part.content}</span>;
+            })}
+        </span>
+    );
+};
+
+// Animated dots for the loading message
+const AnimatedDots = () => {
+    const [dots, setDots] = useState('');
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setDots(prev => prev.length >= 3 ? '' : prev + '.');
+        }, 500);
+        return () => clearInterval(interval);
+    }, []);
+    return <span className="inline-block w-6 text-left">{dots}</span>;
+};
+
+// Cycling messages while quiz generates
+const GENERATION_MESSAGES = [
+    "Crafting your questions",
+    "Thinking of tricky options",
+    "Writing explanations",
+    "Checking the answers",
+    "Polishing the quiz",
+    "Almost there",
+];
+
+const QuizGeneratingOverlay = ({ topic, difficulty, questionNumbers }) => {
+    const [messageIndex, setMessageIndex] = useState(0);
+    const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        const msgInterval = setInterval(() => {
+            setMessageIndex(prev => (prev + 1) % GENERATION_MESSAGES.length);
+        }, 2200);
+
+        // Fake progress that slowly creeps to ~90% then holds
+        const progressInterval = setInterval(() => {
+            setProgress(prev => {
+                if (prev >= 88) return prev;
+                const increment = Math.random() * 6;
+                return Math.min(prev + increment, 88);
+            });
+        }, 600);
+
+        return () => {
+            clearInterval(msgInterval);
+            clearInterval(progressInterval);
+        };
+    }, []);
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+            <Card className="w-full max-w-md mx-4 shadow-2xl border-2">
+                <CardContent className="pt-8 pb-8 flex flex-col items-center gap-6 text-center">
+                    {/* Pulsing brain icon */}
+                    <div className="relative">
+                        <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping" />
+                        <div className="relative p-5 rounded-full bg-primary/10 border border-primary/20">
+                            <Brain className="h-10 w-10 text-primary animate-pulse" />
+                        </div>
+                        <div className="absolute -top-1 -right-1">
+                            <Sparkles className="h-5 w-5 text-yellow-500 animate-spin" style={{ animationDuration: '3s' }} />
+                        </div>
+                    </div>
+
+                    {/* Title & topic */}
+                    <div className="space-y-1">
+                        <h2 className="text-xl font-bold">Generating Your Quiz</h2>
+                        <p className="text-muted-foreground text-sm">
+                            <span className="font-medium text-foreground">{questionNumbers} {difficulty}</span> questions on{' '}
+                            <span className="font-medium text-foreground">"{topic}"</span>
+                        </p>
+                    </div>
+
+                    {/* Progress bar */}
+                    <div className="w-full space-y-2">
+                        <Progress value={progress} className="h-2 w-full" />
+                        <p className="text-xs text-muted-foreground tabular-nums">{Math.round(progress)}%</p>
+                    </div>
+
+                    {/* Cycling status message */}
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground min-h-[1.5rem]">
+                        <Loader2 className="h-4 w-4 animate-spin shrink-0" />
+                        <span>
+                            {GENERATION_MESSAGES[messageIndex]}
+                            <AnimatedDots />
+                        </span>
+                    </div>
+
+                    {/* Fun tip */}
+                    <p className="text-xs text-muted-foreground italic border-t pt-4 w-full">
+                        💡 Tip: AI-generated quizzes usually take 10–20 seconds
+                    </p>
+                </CardContent>
+            </Card>
+        </div>
+    );
+};
 
 const QuizDashboard = () => {
     const [quizzes, setQuizzes] = useState([]);
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [isGenerating, setIsGenerating] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterDifficulty, setFilterDifficulty] = useState('all');
     const [activeTab, setActiveTab] = useState('overview');
@@ -73,15 +242,18 @@ const QuizDashboard = () => {
 
     const createQuiz = async () => {
         try {
+            setIsGenerating(true);
+            setIsCreateDialogOpen(false);
             const response = await axios.post('/api/quiz', quizForm);
 
             if (response.status === 200) {
                 await fetchQuizzes();
-                setIsCreateDialogOpen(false);
                 setQuizForm({ topic: '', difficulty: 'medium', questionType: 'multiple-choice', questionNumbers: 5 });
             }
         } catch (error) {
             console.error('Error creating quiz:', error);
+        } finally {
+            setIsGenerating(false);
         }
     };
 
@@ -112,8 +284,6 @@ const QuizDashboard = () => {
         }));
     };
 
-
-    // Fixed function to go back to quiz list instead of staying in quiz interface
     const backToQuizList = () => {
         setShowResults(false);
         setCurrentQuiz(null);
@@ -221,10 +391,10 @@ const QuizDashboard = () => {
                                                 <XCircle className="h-5 w-5 text-red-500 mt-0.5" />
                                             }
                                             <div className="flex-1">
-                                                <p className="font-medium mb-2">{result.question}</p>
+                                                <p className="font-medium mb-2"><MathText text={result.question} /></p>
                                                 <div className="space-y-1 text-sm">
-                                                    <p><span className="font-medium">Your answer:</span> {result.selectedAnswer}</p>
-                                                    <p><span className="font-medium">Correct answer:</span> {result.correctAnswer}</p>
+                                                    <p><span className="font-medium">Your answer:</span> <MathText text={result.selectedAnswer} /></p>
+                                                    <p><span className="font-medium">Correct answer:</span> <MathText text={result.correctAnswer} /></p>
                                                     {result.explanation && (
                                                         <p className="text-muted-foreground"><span className="font-medium">Explanation:</span> {result.explanation}</p>
                                                     )}
@@ -243,8 +413,6 @@ const QuizDashboard = () => {
                             <Button onClick={() => startQuiz(currentQuiz)}>
                                 Retake Quiz
                             </Button>
-
-
                         </div>
                     </CardContent>
                 </Card>
@@ -274,7 +442,9 @@ const QuizDashboard = () => {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-lg">{currentQuestion.questionText}</CardTitle>
+                        <CardTitle className="text-lg">
+                            <MathText text={currentQuestion.questionText} />
+                        </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <RadioGroup
@@ -289,7 +459,7 @@ const QuizDashboard = () => {
                                 <div key={index} className="flex items-center space-x-2">
                                     <RadioGroupItem value={`${currentQuestion._id}-${index}`} id={`option-${currentQuestion._id}-${index}`} />
                                     <Label htmlFor={`option-${currentQuestion._id}-${index}`} className="flex-1 cursor-pointer">
-                                        {option.text}
+                                        <MathText text={option.text} />
                                     </Label>
                                 </div>
                             ))}
@@ -315,6 +485,15 @@ const QuizDashboard = () => {
 
     return (
         <div className="space-y-6">
+            {/* Full-screen generating overlay */}
+            {isGenerating && (
+                <QuizGeneratingOverlay
+                    topic={quizForm.topic}
+                    difficulty={quizForm.difficulty}
+                    questionNumbers={quizForm.questionNumbers}
+                />
+            )}
+
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl font-bold">Quiz Center</h1>
@@ -339,7 +518,7 @@ const QuizDashboard = () => {
                                 <Label htmlFor="topic">Topic</Label>
                                 <Input
                                     id="topic"
-                                    placeholder="Enter quiz topic (e.g., JavaScript, History"
+                                    placeholder="Enter quiz topic (e.g., JavaScript, History)"
                                     value={quizForm.topic}
                                     onChange={(e) => setQuizForm(prev => ({ ...prev, topic: e.target.value }))}
                                 />
@@ -387,8 +566,9 @@ const QuizDashboard = () => {
                                 <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
                                     Cancel
                                 </Button>
-                                <Button onClick={createQuiz} disabled={!quizForm.topic.trim()}>
-                                    {isLoading ? "Generating" : "Generate Quiz"}
+                                <Button onClick={createQuiz} disabled={!quizForm.topic.trim() || isGenerating}>
+                                    <Sparkles className="h-4 w-4 mr-2" />
+                                    Generate Quiz
                                 </Button>
                             </div>
                         </div>
@@ -411,9 +591,7 @@ const QuizDashboard = () => {
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">{stats.totalQuizzes}</div>
-                                <p className="text-xs text-muted-foreground">
-                                    Quizzes created
-                                </p>
+                                <p className="text-xs text-muted-foreground">Quizzes created</p>
                             </CardContent>
                         </Card>
                         <Card>
@@ -423,9 +601,7 @@ const QuizDashboard = () => {
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">{stats.totalQuestions}</div>
-                                <p className="text-xs text-muted-foreground">
-                                    Questions generated
-                                </p>
+                                <p className="text-xs text-muted-foreground">Questions generated</p>
                             </CardContent>
                         </Card>
                         <Card>
@@ -437,9 +613,7 @@ const QuizDashboard = () => {
                                 <div className="text-2xl font-bold">
                                     {stats.avgDifficulty < 1.5 ? 'Easy' : stats.avgDifficulty < 2.5 ? 'Medium' : 'Hard'}
                                 </div>
-                                <p className="text-xs text-muted-foreground">
-                                    Average complexity
-                                </p>
+                                <p className="text-xs text-muted-foreground">Average complexity</p>
                             </CardContent>
                         </Card>
                     </div>
