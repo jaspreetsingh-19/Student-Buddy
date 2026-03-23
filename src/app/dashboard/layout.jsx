@@ -25,7 +25,9 @@ import {
     Lock,
     HelpCircle,
     Loader2,
-    Brain
+    Brain,
+    Layers,
+    ClipboardCheck
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -102,6 +104,22 @@ const getNavigationItems = (userPlan, usageCount = {}) => [
         title: "Quiz Yourself",
         url: "/dashboard/quiz",
         icon: HelpCircle,
+        isPremium: true,
+        isLocked: userPlan === 'free',
+        usageInfo: null
+    },
+    {
+        title: "Flashcards Generator",
+        url: "/dashboard/flashcards",
+        icon: Layers,
+        isPremium: true,
+        isLocked: userPlan === 'free',
+        usageInfo: null
+    },
+    {
+        title: "Essay Grader",
+        url: "/dashboard/essay-grader",
+        icon: ClipboardCheck,
         isPremium: true,
         isLocked: userPlan === 'free',
         usageInfo: null
