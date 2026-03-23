@@ -245,12 +245,15 @@ export default function EssayGraderPage() {
     const [form, setForm] = useState({ title: "", essayText: "", essayType: "academic" })
 
     useEffect(() => { fetchEssays() }, [])
-
+    
     const fetchEssays = async () => {
         try {
+            console.log("called")
             const res = await axios.get("/api/essay-grader")
+            
             setEssays(res.data.essays || [])
-        } catch (e) { console.error(e) }
+            
+        } catch (e) {"error here", console.error(e) }
         finally { setIsLoading(false) }
     }
 

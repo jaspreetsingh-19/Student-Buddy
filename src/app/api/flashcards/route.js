@@ -5,7 +5,7 @@ import { getDataFromToken } from "@/helper/getDataFromToken"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import Log from "@/models/logs"
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY)
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY)
 
 // GET - fetch all decks for user
 export async function GET(request) {
@@ -41,7 +41,7 @@ export async function POST(request) {
             return NextResponse.json({ error: "Notes and topic are required" }, { status: 400 })
         }
 
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash"  })
 
         const prompt = `You are an expert educator creating spaced-repetition flashcards.
 
@@ -98,7 +98,13 @@ Guidelines:
 
         // Log usage
         try {
-            await Log.create({ userId, action: "flashcard_generate", topic })
+            await Log.create({
+            userId,
+            action: "Flashcard Generated",
+            details: topic,
+            feature: "Flashcards",
+            timestamp: new Date(),
+        });
         } catch {}
 
         return NextResponse.json({ deck, message: "Deck created successfully" })

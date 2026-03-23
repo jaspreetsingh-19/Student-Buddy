@@ -5,13 +5,17 @@ import { getDataFromToken } from "@/helper/getDataFromToken"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import Log from "@/models/logs"
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY)
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY)
 
 // GET - fetch all essays for user
 export async function GET(request) {
     try {
+        
         await connect()
         const userId = await getDataFromToken(request)
+        if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
+        
         const { searchParams } = new URL(request.url)
         const essayId = searchParams.get("essayId")
 
@@ -44,7 +48,7 @@ export async function POST(request) {
 
         const wordCount = essayText.trim().split(/\s+/).length
 
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
         const prompt = `You are an expert academic grader and writing coach. Grade the following ${essayType} essay thoroughly and constructively.
 
@@ -126,7 +130,13 @@ try {
         await essay.save()
 
         try {
-            await Log.create({ userId, action: "Essay-Grader", topic: title })
+            await Log.create({
+            userId,
+            action: "Essay Grader",
+            details: title,
+            feature: "Essay-Grader",
+            timestamp: new Date(),
+        });
         } catch (e){
             return NextResponse.json({ error: "log updation failed" }, { status: 405 })
         }
