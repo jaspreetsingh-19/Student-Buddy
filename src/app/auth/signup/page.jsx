@@ -75,7 +75,7 @@ export default function SignupPage() {
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => router.push("/api/auth/github/redirect")}
+                                        onClick={() => router.push("/api/auth/google/redirect")}
                                         className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
                                     >
                                         <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
