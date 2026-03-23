@@ -200,7 +200,7 @@ npm run dev
 Deployed on [Vercel](https://vercel.com)
 
 Push to `main` branch → Auto deploys to:  
-🔗 [https://student-buddy-kbg7.vercel.app/](https://student-buddy-kbg7.vercel.app/)
+🔗 https://student-buddy-rose.vercel.app/
 
 ---
 
