@@ -126,8 +126,10 @@ try {
         await essay.save()
 
         try {
-            await Log.create({ userId, action: "essay_grade", topic: title })
-        } catch {}
+            await Log.create({ userId, action: "Essay-Grader", topic: title })
+        } catch (e){
+            return NextResponse.json({ error: "log updation failed" }, { status: 405 })
+        }
 
         return NextResponse.json({ essay, message: "Essay graded successfully" })
     } catch (error) {
