@@ -6,6 +6,22 @@ Student Buddy helps students stay on top of their academic life through a beauti
 
 ---
 
+## 🔗 Links
+
+| | |
+|---|---|
+| 🌐 Live Demo | https://student-buddy-rose.vercel.app|
+| 📦 Repository | https://github.com/jaspreetsingh-19/Tele-Health.git |
+
+---
+
+## 📸 Screenshots
+
+> `<!-- Add screenshots here -->`
+
+---
+
+
 ## ✨ Features
 
 | Feature | Description |
@@ -191,6 +207,16 @@ npm start
 For deployment on **Vercel**, add all `.env.local` variables to your Vercel project's environment variables. The `maxDuration = 120` export in the PDF chat route requires a **Vercel Pro** plan (Hobby is limited to 60s).
 
 ---
+
+## 🙋 Author
+
+**Jaspreet Singh**
+- GitHub: https://github.com/jaspreetsingh-19
+- LinkedIn: https://www.linkedin.com/in/jaspreetsingh1900/
+- Email: jaspreetsingh7192006@gmail.com
+
+---
+
 
 ## 🤝 Contributing
 
