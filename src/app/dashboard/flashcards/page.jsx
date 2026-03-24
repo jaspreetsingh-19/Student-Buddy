@@ -69,11 +69,11 @@ const FlipCard = ({ card, isFlipped, onFlip }) => (
         >
             {/* Front */}
             <div
-                className="absolute inset-0 flex flex-col items-center justify-center p-8 rounded-2xl border-2 border-primary/20 bg-card shadow-lg"
+                className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-8 rounded-2xl border-2 border-primary/20 bg-card shadow-lg"
                 style={{ backfaceVisibility: "hidden" }}
             >
                 <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">Question</p>
-                <p className="text-xl font-medium text-center leading-relaxed">{card.front}</p>
+                <p className="text-lg sm:text-xl font-medium text-center leading-relaxed break-words max-w-full">{card.front}</p>
                 <div className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
                     <FlipHorizontal className="h-3 w-3" />
                     Click to reveal answer
@@ -81,11 +81,11 @@ const FlipCard = ({ card, isFlipped, onFlip }) => (
             </div>
             {/* Back */}
             <div
-                className="absolute inset-0 flex flex-col items-center justify-center p-8 rounded-2xl border-2 border-green-500/30 bg-green-50/5 shadow-lg"
+                className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-8 rounded-2xl border-2 border-green-500/30 bg-green-50/5 shadow-lg"
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
             >
                 <p className="text-xs font-semibold uppercase tracking-widest text-green-600 mb-4">Answer</p>
-                <p className="text-xl font-medium text-center leading-relaxed">{card.back}</p>
+                <p className="text-lg sm:text-xl font-medium text-center leading-relaxed break-words max-w-full">{card.back}</p>
             </div>
         </div>
     </div>
@@ -135,7 +135,7 @@ const StudySession = ({ deck, onExit, onDeckUpdate }) => {
     }
 
     if (sessionDone) return (
-        <div className="max-w-lg mx-auto text-center space-y-6 py-16">
+        <div className="max-w-lg mx-auto text-center space-y-6 py-8 px-4 sm:py-16">
             <div className="p-6 rounded-full bg-green-100 dark:bg-green-900/20 w-24 h-24 flex items-center justify-center mx-auto">
                 <CheckCircle className="h-12 w-12 text-green-500" />
             </div>
@@ -154,7 +154,7 @@ const StudySession = ({ deck, onExit, onDeckUpdate }) => {
     const progress = (cardIndex / studyCards.length) * 100
 
     return (
-        <div className="max-w-2xl mx-auto space-y-6">
+        <div className="max-w-2xl mx-auto space-y-6 px-4">
             <div className="flex items-center justify-between">
                 <Button variant="ghost" size="sm" onClick={onExit}>
                     <ChevronLeft className="h-4 w-4 mr-1" /> Exit
@@ -173,7 +173,7 @@ const StudySession = ({ deck, onExit, onDeckUpdate }) => {
             <FlipCard card={currentCard} isFlipped={isFlipped} onFlip={() => setIsFlipped(f => !f)} />
 
             {isFlipped && (
-                <div className="grid grid-cols-4 gap-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
                     <Button variant="outline" className="border-red-300 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 flex flex-col h-16 gap-0.5" onClick={() => handleRate(1)}>
                         <RotateCcw className="h-4 w-4" />
                         <span className="text-xs">Again</span>
@@ -258,7 +258,7 @@ export default function FlashcardsPage() {
     )
 
     return (
-        <div className="space-y-6 p-6">
+        <div className="space-y-6 p-4 sm:p-6">
             {isGenerating && <GeneratingOverlay topic={generateForm.topic} />}
 
             {/* Header */}
@@ -275,11 +275,11 @@ export default function FlashcardsPage() {
                             <Plus className="h-4 w-4" /> New Deck
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-lg">
+                    <DialogContent className="max-w-lg max-h-[90vh] flex flex-col w-[95vw] sm:w-full">
                         <DialogHeader>
                             <DialogTitle>Generate Flashcard Deck</DialogTitle>
                         </DialogHeader>
-                        <div className="space-y-4 pt-2">
+                        <div className="space-y-4 pt-2 overflow-y-auto flex-1">
                             <div>
                                 <Label>Topic</Label>
                                 <Input
@@ -296,11 +296,11 @@ export default function FlashcardsPage() {
                                     onChange={e => setGenerateForm(p => ({ ...p, deckName: e.target.value }))}
                                 />
                             </div>
-                            <div>
+                            <div className="flex flex-col gap-2">
                                 <Label>Paste Your Notes</Label>
                                 <Textarea
                                     placeholder="Paste your lecture notes, textbook excerpts or bullet points here…"
-                                    className="min-h-[140px] resize-none"
+                                    className="min-h-[120px] max-h-[250px] resize-none overflow-y-auto"
                                     value={generateForm.notes}
                                     onChange={e => setGenerateForm(p => ({ ...p, notes: e.target.value }))}
                                 />
@@ -316,22 +316,22 @@ export default function FlashcardsPage() {
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="flex justify-end gap-2 pt-2">
-                                <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-                                <Button
-                                    onClick={handleGenerate}
-                                    disabled={!generateForm.notes.trim() || !generateForm.topic.trim()}
-                                >
-                                    <Sparkles className="h-4 w-4 mr-2" /> Generate
-                                </Button>
-                            </div>
+                        </div>
+                        <div className="flex justify-end gap-2 pt-2 border-t">
+                            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+                            <Button
+                                onClick={handleGenerate}
+                                disabled={!generateForm.notes.trim() || !generateForm.topic.trim()}
+                            >
+                                <Sparkles className="h-4 w-4 mr-2" /> Generate
+                            </Button>
                         </div>
                     </DialogContent>
                 </Dialog>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {[
                     { label: "Total Cards", value: totalCards, icon: BookOpen, color: "text-blue-500" },
                     { label: "Mastered", value: masteredCards, icon: CheckCircle, color: "text-green-500" },

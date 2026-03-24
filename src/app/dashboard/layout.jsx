@@ -27,7 +27,9 @@ import {
     Loader2,
     Brain,
     Layers,
-    ClipboardCheck
+    ClipboardCheck,
+    MessageSquare,
+    Youtube
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -120,6 +122,22 @@ const getNavigationItems = (userPlan, usageCount = {}) => [
         title: "Essay Grader",
         url: "/dashboard/essay-grader",
         icon: ClipboardCheck,
+        isPremium: true,
+        isLocked: userPlan === 'free',
+        usageInfo: null
+    },
+    {
+        title: "Chatbot",
+        url: "/dashboard/pdf-chat",
+        icon: MessageSquare,
+        isPremium: true,
+        isLocked: userPlan === 'free',
+        usageInfo: null
+    },
+    {
+        title: "Youtube Summarizer",
+        url: "/dashboard/youtube-summarizer",
+        icon: Youtube,
         isPremium: true,
         isLocked: userPlan === 'free',
         usageInfo: null
