@@ -127,7 +127,7 @@ const getNavigationItems = (userPlan, usageCount = {}) => [
         usageInfo: null
     },
     {
-        title: "Chatbot",
+        title: "Pdf Chat",
         url: "/dashboard/pdf-chat",
         icon: MessageSquare,
         isPremium: true,
