@@ -11,7 +11,7 @@ Student Buddy helps students stay on top of their academic life through a beauti
 | | |
 |---|---|
 | 🌐 Live Demo | https://student-buddy-rose.vercel.app|
-| 📦 Repository | https://github.com/jaspreetsingh-19/Tele-Health.git |
+| 📦 Repository | https://github.com/jaspreetsingh-19/Student-Buddy.git |
 
 ---
 
@@ -69,7 +69,7 @@ Student Buddy helps students stay on top of their academic life through a beauti
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/student-buddy.git
+git clone https://github.com/jaspreetsingh-19/Student-Buddy.git
 cd student-buddy
 ```
 
