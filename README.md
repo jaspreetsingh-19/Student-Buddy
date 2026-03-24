@@ -159,36 +159,24 @@ Payments are handled via **Razorpay**. Premium users unlock higher usage limits 
 
 ---
 
-## 📄 PDF Chat — How It Works
+## 🌐 Deployment
 
-The PDF chat feature uses **Server-Sent Events (SSE)** to stream real-time progress back to the client during upload:
+Deployed on [Vercel](https://vercel.com)
 
-1. **Step 1** — PDF is sent as base64 to Gemini, which extracts all text and generates a welcome message in a single call
-2. **Step 2** — A context summary is generated for use during the chat session (prevents truncation for large documents)
-3. **Step 3** — Session is saved to MongoDB
-
-Progress events (`33%` → `66%` → `100%`) are streamed live so the user always knows what's happening.
+Push to `main` branch → Auto deploys to:  
+🔗 [https://student-buddy-kbg7.vercel.app/](https://student-buddy-kbg7.vercel.app/)
 
 ---
 
-## 🧑‍💼 Admin Panel
+### 🙌 Contributing
 
-Accessible at `/admin` for admin users. Includes:
-
-- **Analytics** — platform-wide usage graphs
-- **Logs** — activity logs across all users
-- **User Management** — view and manage all accounts
+Contributors are welcome! Feel free to submit issues or pull requests.
 
 ---
 
-## 📦 Building for Production
+### 📄 License
 
-```bash
-npm run build
-npm start
-```
-
-For deployment on **Vercel**, add all `.env.local` variables to your Vercel project's environment variables. The `maxDuration = 120` export in the PDF chat route requires a **Vercel Pro** plan (Hobby is limited to 60s).
+This project is licensed under the MIT License.
 
 ---
 
