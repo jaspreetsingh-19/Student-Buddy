@@ -1,226 +1,213 @@
 # 🎓 Student Buddy
 
-**Student Buddy** is your all-in-one AI-powered academic assistant built with Next.js 15, Gemini AI, Razorpay, and MongoDB. It helps students stay on top of their tasks, generate roadmaps, summarize content, generate AI-powered quizzes, and much more — all from a beautiful, intuitive dashboard.
+> Your all-in-one AI-powered academic assistant — built with Next.js, Gemini AI, Razorpay, and MongoDB.
 
-![Student Buddy Preview](https://your-screenshot-url.com)
+Student Buddy helps students stay on top of their academic life through a beautiful, intuitive dashboard packed with AI-powered tools: generate roadmaps, summarize content, chat with PDFs, create flashcards, grade essays, take AI-generated quizzes, and much more.
 
 ---
 
-## 🚀 Features
+## ✨ Features
 
-- ✅ **Authentication** with secure JWT flow: OAuth login, email verification, forgot/reset password
-- 📅 **Daily Task Manager** — create and view tasks by date
-- 🧠 **AI Summarizer** — summarize text or YouTube videos
-- 🧭 **Roadmap Generator** — get AI-powered career & topic paths
-- 📚 **Resource Library** — explore curated resources with search
-- 📝 **Quiz Generator** — create quizzes with difficulty & question count
-- 👨‍💼 **Admin Panel** — manage users, analytics, and logs
-- 💳 **Razorpay Integration** — support for premium plans with webhook handling
-- 🧩 Built with **Modular & Scalable Architecture**
+| Feature | Description |
+|---|---|
+| 🤖 **AI Chatbot** | Conversational AI assistant for any academic question |
+| 📄 **PDF Chat** | Upload any PDF and chat with it — get instant answers from your notes or textbooks |
+| 🗺️ **Roadmap Generator** | Generate a structured learning roadmap for any topic |
+| 📝 **Summarizer** | Paste or upload content and get a clean AI-generated summary |
+| 🎥 **YouTube Summarizer** | Drop a YouTube URL and get a full transcript summary |
+| 🃏 **Flashcards** | Auto-generate flashcard decks from any topic or content |
+| 🧠 **Quiz Generator** | AI-powered quizzes with instant feedback |
+| ✍️ **Essay Grader** | Get detailed feedback and a grade on any essay |
+| ✅ **Task Manager** | Manage your assignments and to-dos in one place |
+| 📊 **Dashboard Analytics** | Track your usage and study activity over time |
+| 💳 **Payments** | Premium plans powered by Razorpay |
+| 👤 **Auth** | Email/password + Google + GitHub OAuth |
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer      | Tech                                                           |
-| ---------- | -------------------------------------------------------------- |
-| Frontend   | Next.js 15 (App Router), Tailwind CSS, ShadCN UI, Lucide Icons |
-| Backend    | Next.js API Routes, JWT Auth                                   |
-| Database   | MongoDB (Mongoose)                                             |
-| AI Engine  | Google Generative AI SDK (Gemini)                              |
-| Payments   | Razorpay (Subscriptions + Webhooks)                            |
-| Deployment | Vercel                                                         |
+- **Framework** — [Next.js 15](https://nextjs.org/) (App Router)
+- **AI** — [Google Gemini AI](https://ai.google.dev/) (`gemini-2.5-flash`, `gemini-1.5-flash`)
+- **Database** — [MongoDB](https://www.mongodb.com/) + [Mongoose](https://mongoosejs.com/)
+- **Auth** — JWT (`jose`, `jsonwebtoken`) + bcrypt + OAuth (Google, GitHub)
+- **Payments** — [Razorpay](https://razorpay.com/)
+- **Email** — [Mailtrap](https://mailtrap.io/)
+- **UI** — [Tailwind CSS v4](https://tailwindcss.com/) + [Radix UI](https://www.radix-ui.com/) + [Lucide Icons](https://lucide.dev/)
+- **State** — [Zustand](https://zustand-demo.pmnd.rs/)
+- **Charts** — [Chart.js](https://www.chartjs.org/) + [react-chartjs-2](https://react-chartjs-2.js.org/)
+- **Markdown** — [react-markdown](https://github.com/remarkjs/react-markdown) + [react-katex](https://github.com/MatejBransky/react-katex)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- A MongoDB Atlas cluster
+- A Google Gemini API key
+- A Razorpay account (for payments)
+- A Mailtrap account (for emails)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/student-buddy.git
+cd student-buddy
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Set up environment variables
+
+Create a `.env.local` file in the root of the project:
+
+```env
+# MongoDB
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/<dbname>?retryWrites=true&w=majority
+
+# JWT
+JWT_SECRET=your_super_secret_jwt_key
+
+# Google Gemini AI
+GOOGLE_AI_API_KEY=your_gemini_api_key
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# GitHub OAuth
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+
+# Razorpay
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+
+# Mailtrap
+MAILTRAP_TOKEN=your_mailtrap_token
+
+# App URL
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+> ⚠️ If your MongoDB password contains special characters like `@`, `!`, or `#`, URL-encode them (e.g. `@` → `%40`).
+
+### 4. Run the development server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
 ## 📁 Project Structure
 
-```text
-student-buddy/
-├── public/                                # Static files (favicon, logos, images)
-│
-├── src/
-│   ├── app/                               # App Router pages and routes
-│   │   ├── layout.tsx                     # Root layout
-│   │   ├── page.tsx                       # Landing page
-│   │
-│   │   ├── dashboard/                     # Main user dashboard
-│   │   │   ├── layout.jsx
-│   │   │   ├── page.jsx
-│   │   │   ├── tasks/                      # Task management UI
-│   │   │   ├── summarizer/                # Text + YouTube summarizer
-│   │   │   ├── quiz/                      # Quiz creation and dashboard
-│   │   │   ├── roadmap/                   # Roadmap generation
-│   │   │   ├── explore-resources/                 # Resource library
-│   │   │   └── chatbot/                  # doubt solver ui
-│   │
-│   │   ├── auth/                          # Auth pages
-│   │   │   ├── login/
-│   │   │   ├── register/
-│   │   │   ├── signup/
-│   │   │   ├── forgot-password/
-│   │   │   ├── reset-password/
-│   │   │   ├── verify-email/
-│   │   │   └── callback/                  # Token callback handler
-│   │
-│   │   ├── admin/                         # Admin dashboard
-│   │   │   ├── layout.jsx
-│   │   │   └── analytics/
-│   │   │   └── logs/
-│   │   │   └── user/                     # User Management
-
-│   │
-│   │   └── api/                           # API routes
-│   │       ├── auth/
-│   │       ├── admin/
-│   │       ├── chat/
-│   │       ├── dashboard/
-│   │       ├── payment-success/
-│   │       ├── quiz/
-│   │       ├── razorpay-order/
-│   │       ├── resources/
-│   │       ├── roadmap/
-│   │       ├── summarizer/
-│   │       ├── task/
-│   │       ├── usage/
-│   │
-│
-│   ├── components/                        # UI components
-│   │   ├── ui/                            # ShadCN components (buttons, inputs)
-│   │
-│
-│   ├── lib/                               # Utility functions and logic
-│   │   ├── db.js                          # MongoDB connection
-│   │   ├── aiForChatbot                   # Quiz Generator Logic
-│   │   ├── logCreator                     # Log Creationg Logic
-│   │   ├── mailTemplates
-│   │   ├── quote.js                       # Logic For Generating random quotes
-│   │   ├── getDataFromToken.ts           # JWT decoding
-│   │
-│   ├── helper/
-│   │   ├── getDataFromToken.ts           # JWT decoding
-│   │   ├── mailtrap.config.js            # Mail Sending logic
-│   │
-│   │
-│
-│   ├── models/                            # Mongoose models
-│   │   ├── user.js
-│   │   ├── task.js
-│   │   ├── quiz.js
-│   │   ├── quizQuestion.js
-│   │   ├── summarizer.js
-│   │   ├── roadmap.js
-│   │   ├── resources.js
-│   │   └── payment.js
-│   │   └── usage.js
-│   │   └── logs.js
-│   │   └── message.js
-│
-│   ├── styles/
-│   │   └── globals.css                   # Tailwind base styles
-│
-│   └── middleware.ts                     # Middleware for auth, etc.
-│
-├── .env.local                            # Environment variables (never commit)
-├── next.config.js                        # Next.js config
-├── postcss.config.js
-├── tailwind.config.ts
-├── package.json
-└── README.md
-
-
+```
+src/
+├── app/
+│   ├── admin/              # Admin panel (analytics, logs, user management)
+│   ├── api/                # All API route handlers
+│   │   ├── auth/           # Login, signup, OAuth, password reset, email verify
+│   │   ├── chat/           # AI chatbot sessions
+│   │   ├── pdf-chat/       # PDF upload + streaming chat
+│   │   ├── quiz/           # Quiz generation
+│   │   ├── flashcards/     # Flashcard generation
+│   │   ├── summarizer/     # Content summarizer
+│   │   ├── youtube-summarizer/
+│   │   ├── essay-grader/
+│   │   ├── roadmap/
+│   │   ├── task/
+│   │   ├── razorpay-order/ # Payment order creation
+│   │   └── usage/          # Usage stats
+│   ├── auth/               # Auth pages (login, signup, verify, reset)
+│   ├── dashboard/          # Main dashboard + feature pages
+│   └── pricing/            # Pricing page
+├── models/                 # Mongoose schemas
+├── lib/                    # DB connection, utilities
+└── helper/                 # Token helpers, etc.
 ```
 
 ---
 
-## 🛠️ Installation & Setup
+## 🔐 Authentication
 
-### 1. Clone the repository
+Student Buddy supports three auth methods:
+
+- **Email & Password** — with email verification and password reset via Mailtrap
+- **Google OAuth** — one-click sign in with Google
+- **GitHub OAuth** — one-click sign in with GitHub
+
+All sessions use JWT tokens stored in HTTP-only cookies.
+
+---
+
+## 💳 Payments
+
+Payments are handled via **Razorpay**. Premium users unlock higher usage limits across all AI features. The payment flow is:
+
+1. User selects a plan on `/pricing`
+2. A Razorpay order is created via `/api/razorpay-order`
+3. After successful payment, `/api/payment-success` upgrades the user's plan
+
+---
+
+## 📄 PDF Chat — How It Works
+
+The PDF chat feature uses **Server-Sent Events (SSE)** to stream real-time progress back to the client during upload:
+
+1. **Step 1** — PDF is sent as base64 to Gemini, which extracts all text and generates a welcome message in a single call
+2. **Step 2** — A context summary is generated for use during the chat session (prevents truncation for large documents)
+3. **Step 3** — Session is saved to MongoDB
+
+Progress events (`33%` → `66%` → `100%`) are streamed live so the user always knows what's happening.
+
+---
+
+## 🧑‍💼 Admin Panel
+
+Accessible at `/admin` for admin users. Includes:
+
+- **Analytics** — platform-wide usage graphs
+- **Logs** — activity logs across all users
+- **User Management** — view and manage all accounts
+
+---
+
+## 📦 Building for Production
 
 ```bash
-git clone https://github.com/jaspreetsingh-19/Student-Buddy.git
-cd student-buddy
-npm install
+npm run build
+npm start
 ```
 
----
-
-### 2. Setup Environment Variables
-
-Create a .env file in the root with the following variables:
-
-```bash
-env
-
-MONGO_URI=your_mongo_uri
-TOKEN_SECRET=TOKEN_SECRET
-DOMAIN=Domain_URL
-MAILTRAP_TOKEN=MAILTRAP_TOKEN
-GOOGLE_AI_API_KEY=GOOGLE_AI_API_KEY
-GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET
-GOOGLE_REDIRECT_URI=GOOGLE_REDIRECT_URI
-NEXT_PUBLIC_CLIENT_URL=NEXT_PUBLIC_CLIENT_URL
-GITHUB_CLIENT_ID=GITHUB_CLIENT_ID
-GITHUB_CLIENT_SECRET=GITHUB_CLIENT_SECRET
-GITHUB_REDIRECT_URI=GITHUB_REDIRECT_URI
-RAZORPAY_KEY_ID=RAZORPAY_KEY_ID
-RAZORPAY_KEY_SECRET=RAZORPAY_KEY_SECRET
-NEXT_PUBLIC_RAZORPAY_KEY_ID=NEXT_PUBLIC_RAZORPAY_KEY_ID
-
-```
+For deployment on **Vercel**, add all `.env.local` variables to your Vercel project's environment variables. The `maxDuration = 120` export in the PDF chat route requires a **Vercel Pro** plan (Hobby is limited to 60s).
 
 ---
 
-### 3. Run the Development Server
+## 🤝 Contributing
 
-```bash
-npm run dev
+Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
 
-```
-
----
-
-### Features In Action
-
-1.Visit /dashboard after login
-
-2.Generate summaries from /dashboard/summarizer
-
-3.Generate and take quizzes from /dashboard/quiz
-
-4.Admin controls at /admin
-
-5.Premium feature access enabled after Razorpay payment
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
 
 ---
 
-## 🌐 Deployment
+## 📜 License
 
-Deployed on [Vercel](https://vercel.com)
-
-Push to `main` branch → Auto deploys to:  
-🔗 https://student-buddy-rose.vercel.app/
+This project is private and not licensed for public distribution.
 
 ---
 
-### 🙌 Contributing
-
-Contributors are welcome! Feel free to submit issues or pull requests.
-
----
-
-### 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-### 📧 Contact
-
-Built by Jaspreet Singh  
-📧 Email: [jaspreetsingh7192006@gmail.com](mailto:jaspreetsingh7192006@gmail.com)
-
-⭐ **If you liked this project, don’t forget to give it a star!**
-
----
+<p align="center">Built with ❤️ to make studying less painful.</p>
