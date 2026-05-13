@@ -23,9 +23,9 @@ export default function SignupPage() {
         e.preventDefault()
         try {
             setLoading(true)
-                ("started")
+                
             const response = await axios.post("/api/auth/signup", user)
-                ("ended")
+                
 
             toast.success("registered")
             router.push("/auth/verify-email")
